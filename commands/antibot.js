@@ -70,7 +70,7 @@ export default {
       // STATUS
       if (action === "status") {
         const data = global.antiBotGroups[chatId];
-        return kaya.sendMessage(chatId, { text: data?.enabled
+        return monarque.sendMessage(chatId, { text: data?.enabled
           ? `✅ Anti-bot ENABLED\n📊 Mode: ${data.mode.toUpperCase()}`
           : "❌ Anti-bot is disabled."}, { quoted: m });
       }
