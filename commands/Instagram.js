@@ -21,7 +21,7 @@ export default {
 
       const urlMatch = text.match(/https?:\/\/(www\.)?(instagram\.com|instagr\.am)\/\S+/i);
       if (!urlMatch) {
-        return kaya.sendMessage(m.chat, {
+        return monarque.sendMessage(m.chat, {
           text: '❌ This is not a valid Instagram link.',
           contextInfo
         }, { quoted: m });
@@ -29,7 +29,7 @@ export default {
 
       const url = urlMatch[0];
 
-      await kaya.sendMessage(m.chat, {
+      await monarque.sendMessage(m.chat, {
         text: '🔄 Fetching Instagram media...',
         contextInfo
       }, { quoted: m });
@@ -62,7 +62,7 @@ export default {
         const buffer = await axios.get(media.url, { responseType: 'arraybuffer' }).then(r => r.data);
 
         if (media.type === 'video') {
-          await kaya.sendMessage(m.chat, {
+          await monarque.sendMessage(m.chat, {
             video: buffer,
             mimetype: 'video/mp4',
             caption: '✅ Instagram download',
