@@ -76,7 +76,7 @@ export default {
                 await kaya.sendMessage(chatId, {
                     video: { url: videoUrl },
                     mimetype: "video/mp4",
-                    caption: `✅ Downloaded by KAYA-MD\n📝 Title: ${title}`
+                    caption: `✅ Downloaded by MONARQUE-MD\n📝 Title: ${title}`
                 }, { quoted: m });
                 return;
             } catch {}
@@ -100,7 +100,7 @@ export default {
                 await kaya.sendMessage(chatId, {
                     video: { url: tempFile },
                     mimetype: "video/mp4",
-                    caption: `✅ Downloaded by KAYA MD\n📝 Title: ${title}`
+                    caption: `✅ Downloaded by MONARQUE MD\n📝 Title: ${title}`
                 }, { quoted: m });
 
                 fs.unlinkSync(tempFile);
