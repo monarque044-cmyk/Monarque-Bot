@@ -28,20 +28,20 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     if (!m.isGroup) 
       return kaya.sendMessage(m.chat, { text: '❌ This command only works in groups.', contextInfo }, { quoted: m });
 
     const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
     if (!permissions.isAdmin && !permissions.isOwner)
-      return kaya.sendMessage(m.chat, { text: '🚫 Only group admins or the owner can toggle AntiDemote.', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '🚫 Only group admins or the owner can toggle AntiDemote.', contextInfo }, { quoted: m });
 
     const chatId = m.chat;
     const action = args[0]?.toLowerCase();
 
     // ℹ️ Invalid usage
     if (!['on', 'off', 'status'].includes(action)) {
-      return kaya.sendMessage(chatId, { 
+      return monarque.sendMessage(chatId, { 
         text: `*ANTIDEMOTE COMMAND*\n\n` +
               `.antidemote on     → Enable AntiDemote\n` +
               `.antidemote off    → Disable AntiDemote\n` +
@@ -59,26 +59,26 @@ export default {
           .map(p => p.id)
       };
       saveAntiDemote();
-      return kaya.sendMessage(m.chat, { text: '✅ *AntiDemote ENABLED*', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '✅ *AntiDemote ENABLED*', contextInfo }, { quoted: m });
     }
 
     if (action === 'off') {
       delete antiDemoteData[chatId];
       saveAntiDemote();
-      return kaya.sendMessage(m.chat, { text: '❌ *AntiDemote DISABLED*', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '❌ *AntiDemote DISABLED*', contextInfo }, { quoted: m });
     }
 
     if (action === 'status') {
       const isActive = antiDemoteData[chatId]?.enabled || false;
       const count = antiDemoteData[chatId]?.protectedAdmins?.length || 0;
-      return kaya.sendMessage(chatId, { 
+      return monarque.sendMessage(chatId, { 
         text: isActive ? `✅ *AntiDemote ENABLED*\nProtected admins: ${count}` : '❌ *AntiDemote DISABLED*',
         contextInfo
       }, { quoted: m });
     }
   },
 
-  participantUpdate: async (kaya, update) => {
+  participantUpdate: async (monarque, update) => {
     const chatId = update.id;
     const participants = update.participants;
     const action = update.action;
