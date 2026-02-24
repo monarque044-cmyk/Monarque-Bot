@@ -8,7 +8,7 @@ export default {
   description: 'Download photos and videos from Instagram',
   category: 'Download',
 
-  async run(kaya, m, args) {
+  async run(monarque, m, args) {
     try {
       const text = args.join(' ') || m.body || m.caption || '';
 
