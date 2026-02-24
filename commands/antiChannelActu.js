@@ -50,7 +50,7 @@ export default {
 
     const action = args[0]?.toLowerCase();
     if (!action || !["on", "off", "warn", "kick", "status"].includes(action)) {
-      return kaya.sendMessage(chatId, {
+      return monarque.sendMessage(chatId, {
         text:
 `📛 *ANTI-ACTUS CHANNEL COMMAND*
 .antiChannelActu on      → Enable (WARN mode)
