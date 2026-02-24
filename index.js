@@ -104,7 +104,7 @@ async function startBot() {
 sock.ev.on('connection.update', async ({ connection, lastDisconnect }) => {
   try {
     if (connection === 'open') {
-      console.log(chalk.green('✅ KAYA-MD CONNECTÉ'));
+      console.log(chalk.green('✅ MONARQUE-MD CONNECTÉ'));
 
       // Préparer le JID pour s’envoyer le message
       const jid = sock.user?.id?.split(':')[0] + '@s.whatsapp.net';
