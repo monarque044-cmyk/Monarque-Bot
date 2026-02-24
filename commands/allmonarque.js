@@ -18,7 +18,7 @@ export default {
       const groups = Object.values(groupsData);
 
       if (!groups.length)
-        return kaya.sendMessage(m.chat, { text: "❌ No groups found." }, { quoted: m });
+        return monarque.sendMessage(m.chat, { text: "❌ No groups found." }, { quoted: m });
 
       let success = 0;
       let failed = 0;
