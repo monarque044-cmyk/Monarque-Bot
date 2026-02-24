@@ -13,7 +13,7 @@ export default {
       const text = args.join(' ') || m.body || m.caption || '';
 
       if (!text) {
-        return kaya.sendMessage(m.chat, {
+        return monarque.sendMessage(m.chat, {
           text: '❌ Please provide a valid Instagram link.',
           contextInfo
         }, { quoted: m });
@@ -50,7 +50,7 @@ export default {
       }
 
       if (!mediaList.length) {
-        return kaya.sendMessage(m.chat, {
+        return monarque.sendMessage(m.chat, {
           text: '❌ Unable to fetch media (private / expired / blocked).',
           contextInfo
         }, { quoted: m });
@@ -69,7 +69,7 @@ export default {
             contextInfo
           }, { quoted: m });
         } else {
-          await kaya.sendMessage(m.chat, {
+          await monarque.sendMessage(m.chat, {
             image: buffer,
             caption: '✅ Instagram download',
             contextInfo
@@ -81,7 +81,7 @@ export default {
 
     } catch (err) {
       console.error('❌ Instagram command error:', err);
-      return kaya.sendMessage(m.chat, {
+      return monarque.sendMessage(m.chat, {
         text: '❌ Download failed. Try another link.',
         contextInfo
       }, { quoted: m });
