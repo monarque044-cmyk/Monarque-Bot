@@ -43,11 +43,11 @@ export default {
   botAdmin: true,
 
   // ==================== COMMAND ====================
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     const chatId = m.chat;
 
     if (!m.isGroup) {
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "❌ Cette commande ne fonctionne que dans les groupes." },
         { quoted: m }
@@ -56,7 +56,7 @@ export default {
 
     const action = args[0]?.toLowerCase();
     if (!action || !["on", "off", "warn", "kick", "status"].includes(action)) {
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         {
           text:
@@ -76,7 +76,7 @@ export default {
       const data = global.antiStatusGroups[chatId];
       const enabled = data?.enabled ? "✅ Activé" : "❌ Désactivé";
       const mode = data?.mode?.toUpperCase() || "WARN";
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: `📊 Anti-status: ${enabled}\n📊 Mode: ${mode}` },
         { quoted: m }
@@ -84,9 +84,9 @@ export default {
     }
 
     // 🔐 Vérification Admin/Owner
-    const check = await checkAdminOrOwner(kaya, chatId, m.sender);
+    const check = await checkAdminOrOwner(monarque, chatId, m.sender);
     if (!check.isAdminOrOwner) {
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "🚫 Seulement pour les admins ou le propriétaire." },
         { quoted: m }
@@ -97,7 +97,7 @@ export default {
     if (action === "on" || action === "warn") {
       global.antiStatusGroups[chatId] = { enabled: true, mode: "warn" };
       saveAntiStatusGroups();
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "✅ Anti-status activé\n⚠️ Mode WARN (4 warnings = kick)" },
         { quoted: m }
@@ -107,7 +107,7 @@ export default {
     if (action === "kick") {
       global.antiStatusGroups[chatId] = { enabled: true, mode: "kick" };
       saveAntiStatusGroups();
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "✅ Anti-status activé\n🚫 Mode Kick direct" },
         { quoted: m }
@@ -118,7 +118,7 @@ export default {
       delete global.antiStatusGroups[chatId];
       delete global.userStatusWarns[chatId];
       saveAntiStatusGroups();
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "❌ Anti-status désactivé." },
         { quoted: m }
@@ -127,7 +127,7 @@ export default {
   },
 
   // ==================== DETECTION ====================
-  detect: async (kaya, m) => {
+  detect: async (monarque, m) => {
     try {
       if (!m.isGroup || m.key?.fromMe) return;
 
@@ -138,7 +138,7 @@ export default {
       const mode = global.antiStatusGroups[chatId].mode || "warn";
 
       // ✅ Skip admin/owner
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (check.isAdminOrOwner) return;
 
       // 🔥 DETECTION STATUS WHATSAPP
@@ -149,7 +149,7 @@ export default {
       if (!isStatus) return;
 
       // 🗑️ Supprime le message
-      await kaya.sendMessage(chatId, { delete: m.key }).catch(() => {});
+      await monarque.sendMessage(chatId, { delete: m.key }).catch(() => {});
 
       if (mode === "kick") {
         await kaya.groupParticipantsUpdate(chatId, [sender], "remove");
@@ -163,7 +163,7 @@ export default {
 
         const warns = global.userStatusWarns[chatId][sender];
 
-        await kaya.sendMessage(chatId, {
+        await monarque.sendMessage(chatId, {
           text: `⚠️ *ANTI-STATUS*\n👤 @${sender.split("@")[0]}\n📊 Warning: ${warns}/4`,
           mentions: [sender]
         });
