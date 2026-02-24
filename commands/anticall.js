@@ -36,14 +36,14 @@ export default {
   admin: false,
   ownerOnly: true, // Owner only
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     const chatId = m.chat;
     try {
       const sub = args[0]?.toLowerCase() || '';
 
       // ❌ Invalid usage
       if (!['on', 'off', 'status'].includes(sub)) {
-        return kaya.sendMessage(chatId, {
+        return monarque.sendMessage(chatId, {
           text: `*ANTICALL COMMAND*\n\n` +
                 `.anticall on     → Enable automatic call blocking\n` +
                 `.anticall off    → Disable automatic call blocking\n` +
@@ -54,7 +54,7 @@ export default {
       // ℹ️ Status check
       if (sub === 'status') {
         const state = readState();
-        return kaya.sendMessage(chatId, {
+        return monarque.sendMessage(chatId, {
           text: `Anticall is currently *${state.enabled ? 'ENABLED' : 'DISABLED'}*`
         }, { quoted: m });
       }
@@ -64,13 +64,13 @@ export default {
       writeState(enable);
       global.anticallState.enabled = enable;
 
-      return kaya.sendMessage(chatId, {
+      return monarque.sendMessage(chatId, {
         text: `✅ Anticall is now *${enable ? 'ENABLED' : 'DISABLED'}*`
       }, { quoted: m });
 
     } catch (err) {
       console.error('❌ ANTICALL ERROR:', err);
-      return kaya.sendMessage(chatId, {
+      return monarque.sendMessage(chatId, {
         text: '❌ An error occurred with the anticall command.',
         contextInfo
       }, { quoted: m });
