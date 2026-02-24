@@ -15,7 +15,7 @@ export default {
   description: 'Shows that the bot is online',
   category: 'General',
 
-  run: async (kaya, m) => {
+  run: async (monarque, m) => {
     try {
       const now = new Date();
 
@@ -27,7 +27,7 @@ export default {
       });
 
       await sendWithBotImage(
-        kaya,
+        monarque,
         m.chat,
         { caption: message },
         { quoted: m }
@@ -35,7 +35,7 @@ export default {
 
     } catch (err) {
       console.error('❌ Error alive.js :', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to check bot status.' },
         { quoted: m }
