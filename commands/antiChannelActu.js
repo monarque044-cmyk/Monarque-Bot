@@ -66,7 +66,7 @@ export default {
       const data = global.antiChannelGroups[chatId];
       const enabled = data?.enabled ? "✅ Activé" : "❌ Désactivé";
       const mode = data?.mode?.toUpperCase() || "WARN";
-      return kaya.sendMessage(chatId, { text: `📊 Anti-actu-channel: ${enabled}\n📊 Mode: ${mode}` }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: `📊 Anti-actu-channel: ${enabled}\n📊 Mode: ${mode}` }, { quoted: m });
     }
 
     // 🔐 Vérification Admin/Owner
@@ -79,13 +79,13 @@ export default {
     if (action === "on" || action === "warn") {
       global.antiChannelGroups[chatId] = { enabled: true, mode: "warn" };
       saveAntiChannelGroups();
-      return kaya.sendMessage(chatId, { text: "✅ Anti-actus activé\n⚠️ WARN mode (4 warnings = kick)" }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: "✅ Anti-actus activé\n⚠️ WARN mode (4 warnings = kick)" }, { quoted: m });
     }
 
     if (action === "kick") {
       global.antiChannelGroups[chatId] = { enabled: true, mode: "kick" };
       saveAntiChannelGroups();
-      return kaya.sendMessage(chatId, { text: "✅ Anti-actus activé\n🚫 Kick direct mode" }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: "✅ Anti-actus activé\n🚫 Kick direct mode" }, { quoted: m });
     }
 
     if (action === "off") {
