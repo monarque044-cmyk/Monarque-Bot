@@ -50,13 +50,13 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const chatId = m.chat;
       const action = args[0]?.toLowerCase();
 
       if (!action || !["on","off","delete","warn","kick","status"].includes(action)) {
-        return kaya.sendMessage(chatId, { text:
+        return monarque.sendMessage(chatId, { text:
 `${BOT_NAME} Anti-Bot Command
 
 .antibot on      → Enable (WARN mode)
@@ -76,9 +76,9 @@ export default {
       }
 
       // Admin check
-      const check = await checkAdminOrOwner(kaya, chatId, m.sender);
+      const check = await checkAdminOrOwner(monarque, chatId, m.sender);
       if (!check.isAdminOrOwner)
-        return kaya.sendMessage(chatId, { text: "🚫 Admins only." }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: "🚫 Admins only." }, { quoted: m });
 
       // ACTIONS
       if (action === "on") global.antiBotGroups[chatId] = { enabled: true, mode: "warn" };
@@ -92,7 +92,7 @@ export default {
       saveAntiBotGroups();
       saveBotWarns();
 
-      return kaya.sendMessage(chatId, { text:
+      return monarque.sendMessage(chatId, { text:
         action === "off"
           ? "❌ Anti-bot disabled."
           : `✅ Anti-bot ${action === "on" ? "enabled (WARN mode)" : "mode set to " + action.toUpperCase()}` 
@@ -100,11 +100,11 @@ export default {
 
     } catch (err) {
       console.error("❌ antibot.js error:", err);
-      kaya.sendMessage(m.chat, { text: "❌ Anti-bot error." }, { quoted: m });
+      monarque.sendMessage(m.chat, { text: "❌ Anti-bot error." }, { quoted: m });
     }
   },
 
-  detect: async (kaya, m) => {
+  detect: async (monarque, m) => {
     try {
       if (!m.isGroup || m.key?.fromMe) return;
 
@@ -114,11 +114,11 @@ export default {
       if (!data?.enabled) return;
 
       // Ignore admins
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (check.isAdminOrOwner) return;
 
       const metadata = await kaya.groupMetadata(chatId);
-      const botId = kaya.user.id.includes('@s.whatsapp.net') ? kaya.user.id : kaya.user.id + '@s.whatsapp.net';
+      const botId = monarque.user.id.includes('@s.whatsapp.net') ? monarque.user.id : monarque.user.id + '@s.whatsapp.net';
       const bot = metadata.participants.find(p => p.id === botId);
       if (!bot?.admin) return;
 
@@ -139,7 +139,7 @@ export default {
       const mode = data.mode;
 
       // Delete message
-      try { await kaya.sendMessage(chatId, { delete: m.key }); } catch {}
+      try { await monarque.sendMessage(chatId, { delete: m.key }); } catch {}
 
       if (mode === "delete") return;
       if (mode === "kick") return kaya.groupParticipantsUpdate(chatId, [sender], "remove");
@@ -153,7 +153,7 @@ export default {
         if (global.botWarns[chatId][sender] >= 3) {
           delete global.botWarns[chatId][sender];
           saveBotWarns();
-          await kaya.groupParticipantsUpdate(chatId, [sender], "remove");
+          await monarque.groupParticipantsUpdate(chatId, [sender], "remove");
         }
       }
 
