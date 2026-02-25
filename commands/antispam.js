@@ -44,13 +44,13 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const chatId = m.chat;
       const action = args[0]?.toLowerCase();
 
       if (!["on", "off"].includes(action)) {
-        return kaya.sendMessage(chatId, {
+        return monarque.sendMessage(chatId, {
           text: `⚙️ *ANTI-SPAM FLOOD*\n.antispam on  → Enable\n.antispam off → Disable\n\n📨 Limit: ${MESSAGE_LIMIT} messages / ${TIME_WINDOW / 1000}s`,
           contextInfo
         }, { quoted: m });
@@ -58,31 +58,31 @@ export default {
 
       // ✅ Admin/Owner check
       const check = await checkAdminOrOwner(kaya, chatId, m.sender);
-      if (!check.isAdminOrOwner) return kaya.sendMessage(chatId, { text: "🚫 Only Admins or Owner can use this command.", contextInfo }, { quoted: m });
+      if (!check.isAdminOrOwner) return monarque.sendMessage(chatId, { text: "🚫 Only Admins or Owner can use this command.", contextInfo }, { quoted: m });
 
       if (action === "off") {
         delete global.antiSpamGroups[chatId];
         saveAntiSpamGroups();
-        return kaya.sendMessage(chatId, { text: "❌ Anti-spam disabled.", contextInfo }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: "❌ Anti-spam disabled.", contextInfo }, { quoted: m });
       }
 
       // 🔒 Bot admin check avant activation
-      const groupMetadata = await kaya.groupMetadata(chatId).catch(() => null);
+      const groupMetadata = await monarque.groupMetadata(chatId).catch(() => null);
       const botIsAdmin = groupMetadata?.participants.some(p => p.jid === kaya.user.jid && p.admin);
-      if (!botIsAdmin) return kaya.sendMessage(chatId, { text: "❌ Bot must be admin.", contextInfo }, { quoted: m });
+      if (!botIsAdmin) return monarque.sendMessage(chatId, { text: "❌ Bot must be admin.", contextInfo }, { quoted: m });
 
       // ✅ Activer anti-spam
       global.antiSpamGroups[chatId] = { enabled: true };
       saveAntiSpamGroups();
 
-      return kaya.sendMessage(chatId, { text: `✅ Anti-spam enabled\n🚨 Flood detected = AUTOMATIC KICK`, contextInfo }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: `✅ Anti-spam enabled\n🚨 Flood detected = AUTOMATIC KICK`, contextInfo }, { quoted: m });
 
     } catch (err) {
       console.error("❌ antispam.js error:", err);
     }
   },
 
-  detect: async (kaya, m) => {
+  detect: async (monarque, m) => {
     try {
       const chatId = m.chat;
       const sender = m.sender;
@@ -90,7 +90,7 @@ export default {
       if (!global.antiSpamGroups?.[chatId]?.enabled) return;
 
       // Skip admins/owners
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (check.isAdminOrOwner) return;
 
       const now = Date.now();
@@ -108,12 +108,12 @@ export default {
         delete global.spamTracker[chatId][sender];
 
         // 🗑️ Delete spam message
-        await kaya.sendMessage(chatId, { delete: m.key }).catch(() => {});
+        await monarque.sendMessage(chatId, { delete: m.key }).catch(() => {});
 
         // 👢 Kick user
-        await kaya.groupParticipantsUpdate(chatId, [sender], "remove");
+        await monarque.groupParticipantsUpdate(chatId, [sender], "remove");
 
-        await kaya.sendMessage(chatId, {
+        await monarque.sendMessage(chatId, {
           text: `🚫 @${sender.split("@")[0]} kicked for spamming (flood).`,
           mentions: [sender],
           contextInfo
