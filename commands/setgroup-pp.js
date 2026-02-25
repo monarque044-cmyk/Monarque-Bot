@@ -11,16 +11,16 @@ export default {
   ownerOnly: false,
   usage: '.setgroup-pp <image_url>',
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
       const chatId = m.chat;
 
       // 🔐 Check admin / owner
-      const check = await checkAdminOrOwner(kaya, chatId, m.sender);
+      const check = await checkAdminOrOwner(monarque, chatId, m.sender);
       if (!check.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '🚫 Admins or Owner only.' },
           { quoted: m }
@@ -29,7 +29,7 @@ export default {
 
       // ❌ No URL provided
       if (!args[0]) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '❌ Please provide a direct link to an image.' },
           { quoted: m }
@@ -43,7 +43,7 @@ export default {
         const res = await axios.get(args[0], { responseType: 'arraybuffer' });
         buffer = Buffer.from(res.data);
       } catch {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '❌ Invalid or inaccessible image link.' },
           { quoted: m }
@@ -51,9 +51,9 @@ export default {
       }
 
       // ✅ Update group profile picture
-      await kaya.updateProfilePicture(chatId, buffer);
+      await monarque.updateProfilePicture(chatId, buffer);
 
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: '✅ Group profile picture updated successfully.' },
         { quoted: m }
@@ -61,7 +61,7 @@ export default {
 
     } catch (err) {
       console.error('[SETGROUP-PP] Error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to change the group profile picture.' },
         { quoted: m }
