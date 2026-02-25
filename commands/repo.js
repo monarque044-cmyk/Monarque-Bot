@@ -11,7 +11,7 @@ export default {
 
   async execute(monarque, m) {
     await sendWithBotImage(
-      kaya,
+      monarque,
       m.chat,
       {
         caption: buildRepoMessage(),
