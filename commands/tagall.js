@@ -9,17 +9,17 @@ export default {
   group: true,
   admin: false,
 
-  execute: async (kaya, m) => {
+  execute: async (monarque, m) => {
     try {
       if (!m.isGroup) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⛔ Cette commande est uniquement disponible dans les groupes." },
           { quoted: m }
         );
       }
 
-      const metadata = await kaya.groupMetadata(m.chat);
+      const metadata = await monarque.groupMetadata(m.chat);
       const participants = metadata.participants.map(p => p.id);
 
       const now = new Date();
@@ -38,7 +38,7 @@ export default {
       });
 
       await sendWithBotImage(
-        kaya,
+        monarque,
         m.chat,
         {
           caption: fullMessage,
@@ -50,7 +50,7 @@ export default {
 
     } catch (error) {
       console.error("❌ Erreur tagall :", error);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: "❌ Une erreur est survenue lors de la mention." },
         { quoted: m }
