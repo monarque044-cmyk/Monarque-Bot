@@ -5,7 +5,7 @@ export default {
   description: 'Analyse les traits de caractère d’un utilisateur de manière amusante',
   usage: '.character @user ou reply à un message',
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const chatId = m.chat;
 
@@ -26,7 +26,7 @@ export default {
       }
 
       if (!target) {
-        return kaya.sendMessage(chatId, {
+        return monarque.sendMessage(chatId, {
           text: '❌ Mentionnez quelqu’un ou répondez à son message pour analyser son caractère !'
         }, { quoted: m });
       }
@@ -34,7 +34,7 @@ export default {
       // 🔹 Récupérer l’image de profil
       let profilePic;
       try {
-        profilePic = await kaya.profilePictureUrl(target, 'image');
+        profilePic = await monarque.profilePictureUrl(target, 'image');
       } catch {
         profilePic = 'https://i.imgur.com/2wzGhpF.jpeg'; // Image par défaut
       }
@@ -71,7 +71,7 @@ export default {
         `⚠️ Note : Ceci est une analyse amusante et ne doit pas être prise au sérieux !`;
 
       // 🔹 Envoi avec l’image de profil
-      await kaya.sendMessage(chatId, {
+      await monarque.sendMessage(chatId, {
         image: { url: profilePic },
         caption: analysis,
         mentions: [target]
@@ -79,7 +79,7 @@ export default {
 
     } catch (error) {
       console.error('❌ Erreur commande character:', error);
-      await kaya.sendMessage(m.chat, {
+      await monarque.sendMessage(m.chat, {
         text: '❌ Impossible d’analyser le caractère ! Réessayez plus tard.'
       }, { quoted: m });
     }
