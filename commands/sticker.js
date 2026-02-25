@@ -64,8 +64,8 @@ export default {
 
             // 🎨 Sticker options
             const stickerOptions = {
-                packname: global.packname || 'KAYA-MD',
-                author: global.author || 'kaya-tech',
+                packname: global.packname || 'MONARQUE-MD',
+                author: global.author || 'monarque-tech',
                 quality: 50,
                 type: videoMessage ? 'animated' : 'full'
             };
