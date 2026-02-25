@@ -12,7 +12,7 @@
     "restart": "node --max-old-space-size=4096 index.js",
     "dev": "nodemon index.js"
   },
-  "author": "𝑍ᴇʀ⭕ Tech",
+  "author": "𝕄𝕠𝕟𝕒𝕣𝕢𝕦𝕖 Tech",
   "license": "MIT",
   "dependencies": {
     "@whiskeysockets/baileys": "^7.0.0-rc.6",
