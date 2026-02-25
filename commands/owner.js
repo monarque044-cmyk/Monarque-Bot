@@ -9,9 +9,9 @@ export default {
   description: 'Shows information about the bot developer',
   category: 'General',
 
-  async execute(kaya, m) {
+  async execute(monarque, m) {
     await sendWithBotImage(
-      kaya,
+      monarque,
       m.chat,
       {
         caption: BOT_OWNER_INFO,
