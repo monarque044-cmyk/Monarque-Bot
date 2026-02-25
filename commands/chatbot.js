@@ -14,7 +14,7 @@ export default {
   description: 'Active/désactive le ChatBot : privé, groupes ou global (owner uniquement)',
     category: 'AI',
 
-  async execute(Kaya, m, args) {
+  async execute(monarque, m, args) {
     try {
       // 🔐 Owner uniquement
       if (!m.fromMe) return;
@@ -37,7 +37,7 @@ export default {
           db.mode = 'off';
           break;
         default:
-          return Kaya.sendMessage(
+          return monarque.sendMessage(
             m.chat,
             { text: '❌ Utilisation : .chatbot on | group | all | off (owner uniquement)' },
             { quoted: m }
@@ -45,17 +45,17 @@ export default {
       }
 
       fs.writeFileSync(file, JSON.stringify(db, null, 2));
-      return Kaya.sendMessage(m.chat, { text: `✅ Mode ChatBot défini sur : ${db.mode}` }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: `✅ Mode ChatBot défini sur : ${db.mode}` }, { quoted: m });
 
     } catch (err) {
       console.error('❌ Erreur ChatBot:', err);
-      return Kaya.sendMessage(m.chat, { text: '⚠️ Une erreur est survenue avec le ChatBot.' }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '⚠️ Une erreur est survenue avec le ChatBot.' }, { quoted: m });
     }
   }
 };
 
 // ==================== Fonction de réponse automatique ====================
-export async function chatBotReply(Kaya, m) {
+export async function chatBotReply(monarque, m) {
   try {
     if (!fs.existsSync(file)) return;
     const db = JSON.parse(fs.readFileSync(file, 'utf-8'));
@@ -79,7 +79,7 @@ export async function chatBotReply(Kaya, m) {
       : '❌ Je n’ai pas de réponse pour le moment.';
 
     // Envoi de la réponse comme une personne normale (sans contextInfo)
-    await Kaya.sendMessage(chatId, { text: answer });
+    await monarque.sendMessage(chatId, { text: answer });
 
   } catch (err) {
     console.error('❌ Erreur chatBotReply:', err);
