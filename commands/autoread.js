@@ -36,7 +36,7 @@ function isBotMentionedInMessage(message, botNumber) {
     const botUsername = botNumber.split('@')[0];
     if (text.includes(`@${botUsername}`)) return true;
 
-    const botNames = [global.botname?.toLowerCase(), 'bot', 'kaya', 'kaya bot'];
+    const botNames = [global.botname?.toLowerCase(), 'bot', 'monarque', 'monarque bot'];
     const words = text.toLowerCase().split(/\s+/);
     if (botNames.some(name => words.includes(name))) return true;
   }
@@ -71,7 +71,7 @@ export default {
   category: 'Owner',
   ownerOnly: true, // ✅ géré par le handler
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const config = initConfig();
       const action = args[0]?.toLowerCase();
@@ -79,7 +79,7 @@ export default {
       if (action === 'on' || action === 'enable') config.enabled = true;
       else if (action === 'off' || action === 'disable') config.enabled = false;
       else if (!action) config.enabled = !config.enabled;
-      else return kaya.sendMessage(
+      else return monarque.sendMessage(
         m.chat,
         { text: '❌ Option invalide ! Utilise : .autoread on/off' },
         { quoted: m }
@@ -87,7 +87,7 @@ export default {
 
       fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `✅ Auto-read est maintenant ${config.enabled ? 'activé' : 'désactivé'} !` },
         { quoted: m }
@@ -95,7 +95,7 @@ export default {
 
     } catch (err) {
       console.error('[AUTOREAD CMD]', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Une erreur est survenue lors de la commande.' },
         { quoted: m }
