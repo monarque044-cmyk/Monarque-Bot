@@ -10,12 +10,12 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, msg, store, args) => {
+  run: async (monarque, m, msg, store, args) => {
     try {
       // 🔹 Check if user is admin / owner
-      const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '🚫 Access denied: Only admins or owners can use this command.', contextInfo },
           { quoted: m }
@@ -23,7 +23,7 @@ export default {
       }
 
       // 🔹 Unlock the group (everyone can send messages)
-      await kaya.groupSettingUpdate(m.chat, 'not_announcement');
+      await monarque.groupSettingUpdate(m.chat, 'not_announcement');
 
       const text = `
 ╭━━〔🔓 GROUP UNLOCKED〕━━⬣
@@ -32,7 +32,7 @@ export default {
 ╰━━━━━━━━━━━━━━━━━━━━⬣
       `.trim();
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text, mentions: [m.sender], contextInfo },
         { quoted: m }
@@ -40,7 +40,7 @@ export default {
 
     } catch (err) {
       console.error('❌ unlock.js error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to unlock the group. Make sure I am admin.', contextInfo },
         { quoted: m }
