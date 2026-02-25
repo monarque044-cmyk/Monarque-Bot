@@ -7,7 +7,7 @@ export default {
   description: 'Traduit un message en une langue spécifique',
   usage: '<reply à un message ou texte> <langue>',
 
-  async execute(kaya, m, args) {
+  async execute(monarque, m, args) {
     const chatId = m.chat;
 
     try {
@@ -38,7 +38,7 @@ export default {
         lang = args[0]?.toLowerCase(); // langue après la commande
 
         if (!lang) {
-          return kaya.sendMessage(chatId, { 
+          return monarque.sendMessage(chatId, { 
             text: '❌ Indique la langue pour la traduction.\nExemple: .traduc fr' 
           }, { quoted: m });
         }
@@ -46,7 +46,7 @@ export default {
       // 2️⃣ Sans reply → arguments + langue
       else {
         if (args.length < 2) {
-          return kaya.sendMessage(chatId, {
+          return monarque.sendMessage(chatId, {
             text: `🌍 *COMMANDE TRADUCTION (.traduc)*
 
 Usage:
@@ -71,7 +71,7 @@ ru | ja | ko | zh | ar | hi`,
       }
 
       if (!textToTranslate) {
-        return kaya.sendMessage(chatId, { text: '❌ Aucun texte à traduire.' }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: '❌ Aucun texte à traduire.' }, { quoted: m });
       }
 
       // ==================== TRADUCTION ====================
@@ -102,11 +102,11 @@ ru | ja | ko | zh | ar | hi`,
       }
 
       // ==================== ENVOI ====================
-      await kaya.sendMessage(chatId, { text: translatedText }, { quoted: m });
+      await monarque.sendMessage(chatId, { text: translatedText }, { quoted: m });
 
     } catch (err) {
       console.error('❌ Traduc command error:', err);
-      await kaya.sendMessage(chatId, { text: '❌ Impossible de traduire le texte. Réessaie plus tard.', quoted: m });
+      await monarque.sendMessage(chatId, { text: '❌ Impossible de traduire le texte. Réessaie plus tard.', quoted: m });
     }
   }
 };
