@@ -3,7 +3,7 @@ import { contextInfo } from '../system/contextInfo.js';
 
 export default {
   name: 'prefix',
-  description: 'Change or display the bot prefix (KAYA-MD)',
+  description: 'Change or display the bot prefix (MONARQUE-MD)',
   category: 'Owner',
   ownerOnly: true,
 
@@ -54,7 +54,7 @@ export default {
       console.error('❌ prefix error:', err);
       return sock.sendMessage(
         m.chat,
-        { text: '❌ An error occurred while changing the prefix (KAYA-MD).', contextInfo },
+        { text: '❌ An error occurred while changing the prefix (MONARQUE-MD).', contextInfo },
         { quoted: m }
       );
     }
