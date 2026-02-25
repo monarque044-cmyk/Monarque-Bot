@@ -6,7 +6,7 @@ export default {
     alias: ['meteo', 'temp'],
     category: 'General',
     description: 'Affiche la météo actuelle pour une ville donnée',
-    async execute(kaya, m, args) {
+    async execute(monarque, m, args) {
         const chatId = m.chat;
         const city = args.join(' ');
 
