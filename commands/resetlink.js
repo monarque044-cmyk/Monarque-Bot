@@ -31,7 +31,7 @@ export default {
       }
 
       // 🔁 Reset the invite link (without displaying it)
-      await kaya.groupRevokeInvite(chatId);
+      await monarque.groupRevokeInvite(chatId);
 
       return monarque.sendMessage(
         chatId,
