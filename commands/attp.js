@@ -25,8 +25,8 @@ export default {
 
       // Convert to WebP with EXIF
       const webpPath = await writeExif({ data: mp4Buffer, mimetype: 'video/mp4' }, {
-        packname: 'KAYA-MD',
-        author: 'Kaya',
+        packname: 'MONARQUE-MD',
+        author: 'monarque',
         categories: ['🤖']
       });
 
