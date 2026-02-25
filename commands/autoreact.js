@@ -18,7 +18,7 @@ export default {
   category: 'Owner',
   ownerOnly: true, // ✅ Handler controls access
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       global.botModes = global.botModes || {};
       global.botModes.autoreact = global.botModes.autoreact || { enabled: false };
@@ -26,7 +26,7 @@ export default {
       const action = args[0]?.toLowerCase();
 
       if (!['on', 'off', 'status', 'test'].includes(action)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text:
@@ -50,9 +50,9 @@ The bot automatically reacts to messages with random emojis.`,
         saveBotModes(global.botModes);
 
         const emoji = getRandomEmoji();
-        await kaya.sendMessage(m.chat, { react: { text: emoji, key: m.key } });
+        await monarque.sendMessage(m.chat, { react: { text: emoji, key: m.key } });
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: `✅ *Auto-react enabled*\n\n🎲 Example emoji: ${emoji}`,
@@ -67,7 +67,7 @@ The bot automatically reacts to messages with random emojis.`,
         global.botModes.autoreact.enabled = false;
         saveBotModes(global.botModes);
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ *Auto-react disabled*', contextInfo },
           { quoted: m }
@@ -80,7 +80,7 @@ The bot automatically reacts to messages with random emojis.`,
           ? '✅ ENABLED'
           : '❌ DISABLED';
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: `🎭 *Auto-react*\n\nStatus: ${status}\nTotal emojis: ${RANDOM_EMOJIS.length}`,
@@ -102,7 +102,7 @@ The bot automatically reacts to messages with random emojis.`,
           }, i * 400);
         }
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '🧪 *Auto-react test sent (5 emojis)*', contextInfo },
           { quoted: m }
@@ -111,7 +111,7 @@ The bot automatically reacts to messages with random emojis.`,
 
     } catch (err) {
       console.error('❌ autoreact error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred.', contextInfo },
         { quoted: m }
