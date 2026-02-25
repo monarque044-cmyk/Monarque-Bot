@@ -9,14 +9,14 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     const chatId = m.chat;
 
     try {
       // 🔹 Check admin / owner
-      const permissions = await checkAdminOrOwner(kaya, chatId, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, chatId, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "🚫 Only *Admins* or the *Owner* can use `.kick`.", contextInfo },
           { quoted: m }
@@ -24,7 +24,7 @@ export default {
       }
 
       // 🔹 Fetch group metadata
-      const groupMetadata = await kaya.groupMetadata(chatId);
+      const groupMetadata = await monarque.groupMetadata(chatId);
       const participants = groupMetadata.participants || [];
 
       // ==================== TARGET ====================
@@ -44,7 +44,7 @@ export default {
       }
 
       if (!target) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "⚙️ Usage: `.kick @user` or reply to their message.", contextInfo },
           { quoted: m }
@@ -57,7 +57,7 @@ export default {
         .map(p => p.id);
 
       if (groupAdmins.includes(target)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "❌ Cannot kick an *Admin*.", contextInfo },
           { quoted: m }
@@ -65,14 +65,14 @@ export default {
       }
 
       // ==================== SILENT KICK ====================
-      await kaya.groupParticipantsUpdate(chatId, [target], "remove");
+      await monarque.groupParticipantsUpdate(chatId, [target], "remove");
 
       // ❌ NO MESSAGE SENT TO THE GROUP
       return;
 
     } catch (err) {
       console.error("❌ Kick command error:", err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "⚠️ Unable to remove this member.", contextInfo },
         { quoted: m }
