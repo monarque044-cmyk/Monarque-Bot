@@ -93,4 +93,3 @@ export async function handleBotModes(sock, m, randomEmoji = defaultRandomEmoji) 
   } catch (err) {
     console.error('❌ BotModes error:', err);
   }
-}
