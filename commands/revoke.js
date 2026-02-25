@@ -11,14 +11,14 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
       // 🔹 Check if sender is admin / owner
-      const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "🚫 Only group Admins or the Owner can use `.revoke`.", contextInfo },
           { quoted: m }
@@ -42,7 +42,7 @@ export default {
       }
 
       if (!target) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⚠️ Target not found for demotion.", contextInfo },
           { quoted: m }
@@ -54,7 +54,7 @@ export default {
       if (permissions.isOwner && target === ownerJid) return;
 
       // ✅ Silent demotion
-      await kaya.groupParticipantsUpdate(m.chat, [target], 'demote');
+      await monarque.groupParticipantsUpdate(m.chat, [target], 'demote');
 
       // ❌ No message sent to the group
       return;
