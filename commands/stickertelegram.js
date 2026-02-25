@@ -15,11 +15,11 @@ export default {
   description: 'Download a Telegram sticker pack and send it on WhatsApp',
   category: 'Sticker',
 
-  async run(kaya, m, args) {
+  async run(monarque, m, args) {
     try {
       const url = args[0];
       if (!url) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '⚠️ Please provide the Telegram pack URL.\nEx: .tg https://t.me/addstickers/Porcientoreal' },
           { quoted: m }
@@ -27,7 +27,7 @@ export default {
       }
 
       if (!/^https?:\/\/t\.me\/addstickers\/[A-Za-z0-9_]+$/i.test(url)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ Invalid link! Make sure it is a Telegram sticker pack.' },
           { quoted: m }
@@ -49,7 +49,7 @@ export default {
       let stickers = packData.result.stickers;
       if (stickers.length > MAX_STICKERS) stickers = stickers.slice(0, MAX_STICKERS);
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `📦 Pack found: ${stickers.length} stickers\n⏳ Downloading...` },
         { quoted: m }
@@ -83,7 +83,7 @@ export default {
 
             const stickerBuffer = fs.readFileSync(exifFilePath);
 
-            await kaya.sendMessage(m.chat, {
+            await monarque.sendMessage(m.chat, {
               sticker: stickerBuffer
             });
 
@@ -98,7 +98,7 @@ export default {
         await delay(BATCH_DELAY);
       }
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `✅ Stickers sent: ${success}/${stickers.length}` },
         { quoted: m }
@@ -106,7 +106,7 @@ export default {
 
     } catch (err) {
       console.error('❌ tg command error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to download the pack. Check the URL or pack visibility.' },
         { quoted: m }
