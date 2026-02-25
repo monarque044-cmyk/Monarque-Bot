@@ -11,10 +11,10 @@ export default {
   category: 'General',
   ownerOnly: false,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!args.length) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: `❌ *${BOT_NAME}* - Please provide text to convert into voice.\n\nUsage:\n.voice <text>` },
           { quoted: m }
@@ -43,7 +43,7 @@ export default {
       fs.writeFileSync(tempFile, finalBuffer);
 
       // Send the voice note
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           audio: fs.createReadStream(tempFile),
@@ -57,7 +57,7 @@ export default {
 
     } catch (err) {
       console.error('❌ voice command error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `❌ *${BOT_NAME}* - An error occurred while generating the voice message.` },
         { quoted: m }
