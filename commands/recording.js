@@ -31,7 +31,7 @@ export default {
 
         // Trigger presence for confirmation
         await kaya.sendPresenceUpdate('recording', m.chat);
-        setTimeout(() => kaya.sendPresenceUpdate('paused', m.chat), 2000);
+        setTimeout(() => monarque.sendPresenceUpdate('paused', m.chat), 2000);
 
         return monarque.sendMessage(
           m.chat,
