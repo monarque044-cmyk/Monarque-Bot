@@ -7,23 +7,23 @@ export default {
   description: "Download song from YouTube",
   category: "Download",
 
-  async execute(Kaya, m, args) {
+  async execute(monarque, m, args) {
     try {
       // -------------------- Check query --------------------
       if (!args.length) {
-        await Kaya.sendMessage(
+        await monarque.sendMessage(
           m.chat,
           { text: `❌ Usage: \`.song <song name>\`` },
           { quoted: m }
         );
-        await Kaya.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
+        await monarque.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
         return;
       }
 
       const query = args.join(' ').trim();
 
       // 🔎 React searching
-      await Kaya.sendMessage(m.chat, { react: { text: "🔎", key: m.key } });
+      await monarque.sendMessage(m.chat, { react: { text: "🔎", key: m.key } });
 
       // -------------------- Search YouTube --------------------
       let video;
@@ -32,19 +32,19 @@ export default {
       } else {
         const search = await yts(query);
         if (!search.videos.length) {
-          await Kaya.sendMessage(
+          await monarque.sendMessage(
             m.chat,
             { text: `❌ No results found for your query!` },
             { quoted: m }
           );
-          await Kaya.sendMessage(m.chat, { react: { text: "⚠️", key: m.key } });
+          await monarque.sendMessage(m.chat, { react: { text: "⚠️", key: m.key } });
           return;
         }
         video = search.videos[0];
       }
 
       // -------------------- Info message --------------------
-      await Kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           image: { url: video.thumbnail },
@@ -54,7 +54,7 @@ export default {
       );
 
       // ⏳ React downloading
-      await Kaya.sendMessage(m.chat, { react: { text: "⏳", key: m.key } });
+      await monarque.sendMessage(m.chat, { react: { text: "⏳", key: m.key } });
 
       // -------------------- Call the API --------------------
       const apiUrl = `https://yt-dl.officialhectormanuel.workers.dev/?url=${encodeURIComponent(video.url)}`;
@@ -62,12 +62,12 @@ export default {
       const data = response.data;
 
       if (!data?.status || !data.audio) {
-        await Kaya.sendMessage(
+        await monarque.sendMessage(
           m.chat,
           { text: "❌ Failed to fetch from API. Try again later." },
           { quoted: m }
         );
-        await Kaya.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
+        await monarque.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
         return;
       }
 
@@ -75,7 +75,7 @@ export default {
       const title = data.title || video.title;
 
       // -------------------- Send audio --------------------
-      await Kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           audio: { url: audioUrl },
@@ -87,7 +87,7 @@ export default {
       );
 
       // ✅ React success
-      await Kaya.sendMessage(m.chat, { react: { text: "✅", key: m.key } });
+      await monarque.sendMessage(m.chat, { react: { text: "✅", key: m.key } });
 
     } catch (error) {
       console.error("❌ SONG ERROR:", error);
@@ -97,8 +97,8 @@ export default {
       else if (error.response?.status === 404) errorMessage = "❌ Song not found or unavailable.";
       else if (error.response?.status === 429) errorMessage = "❌ Too many requests. Please wait a moment.";
 
-      await Kaya.sendMessage(m.chat, { text: errorMessage }, { quoted: m });
-      await Kaya.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
+      await monarque.sendMessage(m.chat, { text: errorMessage }, { quoted: m });
+      await monarque.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
     }
   },
 };
