@@ -93,7 +93,7 @@ export default {
         chatId,
         {
           image: response.data,
-          caption: "✨ *Fond supprimé avec succès !*\n\n𝗞𝗔𝗬𝗔-𝗠𝗗"
+          caption: "✨ *Fond supprimé avec succès !*\n\nMONARQUE-𝗠𝗗"
         },
         { quoted: m }
       );
