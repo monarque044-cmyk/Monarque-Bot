@@ -11,7 +11,7 @@ export default {
         const city = args.join(' ');
 
         if (!city) {
-            return kaya.sendMessage(chatId, { text: '❌ Usage : .weather <city>\nExemple : .weather Paris' }, { quoted: m });
+            return monarque.sendMessage(chatId, { text: '❌ Usage : .weather <city>\nExemple : .weather Paris' }, { quoted: m });
         }
 
         try {
@@ -29,10 +29,10 @@ export default {
 💧 Humidité : *${weather.main.humidity}%*
             `.trim();
 
-            await kaya.sendMessage(chatId, { text: weatherText }, { quoted: m });
+            await monarque.sendMessage(chatId, { text: weatherText }, { quoted: m });
         } catch (err) {
             console.error('❌ weather command error:', err);
-            await kaya.sendMessage(chatId, { text: '❌ Impossible de récupérer la météo. Vérifie le nom de la ville ou réessaie plus tard.' }, { quoted: m });
+            await monarque.sendMessage(chatId, { text: '❌ Impossible de récupérer la météo. Vérifie le nom de la ville ou réessaie plus tard.' }, { quoted: m });
         }
     }
 };
