@@ -12,7 +12,7 @@ export default {
   ownerOnly: false,
   usage: '.link',
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
@@ -20,9 +20,9 @@ export default {
       const sender = decodeJid(m.sender);
 
       // 🔐 Vérification admin / owner
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (!check.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: `🚫 Only *Admins* or the *Bot Owner* can use this command.` },
           { quoted: m }
@@ -30,9 +30,9 @@ export default {
       }
 
       // 🔗 Récupération du lien du groupe
-      const code = await kaya.groupInviteCode(chatId);
+      const code = await monarque.groupInviteCode(chatId);
       if (!code) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '❌ Unable to retrieve the group link.' },
           { quoted: m }
@@ -43,14 +43,14 @@ export default {
       // 📸 Récupération de la photo du groupe
       let groupImage = null;
       try {
-        groupImage = await kaya.profilePictureUrl(chatId, 'image');
+        groupImage = await monarque.profilePictureUrl(chatId, 'image');
       } catch {
         groupImage = null; // pas de photo
       }
 
       // 🔹 Envoi du lien avec image si dispo
       if (groupImage) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           {
             image: { url: groupImage },
@@ -59,7 +59,7 @@ export default {
           { quoted: m }
         );
       } else {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: `🔗 *Group Link* :\n${inviteLink}\n\nby ${BOT_NAME}` },
           { quoted: m }
@@ -68,7 +68,7 @@ export default {
 
     } catch (err) {
       console.error('[LINK] Error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred while retrieving the group link.' },
         { quoted: m }
