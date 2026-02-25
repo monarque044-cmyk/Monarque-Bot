@@ -28,13 +28,13 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     if (!m.isGroup) 
-      return kaya.sendMessage(m.chat, { text: '❌ This command only works in groups.', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '❌ This command only works in groups.', contextInfo }, { quoted: m });
 
-    const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+    const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
     if (!permissions.isAdminOrOwner) 
-      return kaya.sendMessage(m.chat, { text: '🚫 Only group admins or the owner can toggle AntiPromote.', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '🚫 Only group admins or the owner can toggle AntiPromote.', contextInfo }, { quoted: m });
 
     const chatId = m.chat;
     const action = args[0]?.toLowerCase();
@@ -42,31 +42,31 @@ export default {
     if (action === 'on') {
       antiPromoteData[chatId] = { enabled: true };
       saveAntiPromote();
-      return kaya.sendMessage(m.chat, { text: '✅ *AntiPromote ENABLED*', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '✅ *AntiPromote ENABLED*', contextInfo }, { quoted: m });
     }
 
     if (action === 'off') {
       delete antiPromoteData[chatId];
       saveAntiPromote();
-      return kaya.sendMessage(m.chat, { text: '❌ *AntiPromote DISABLED*', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: '❌ *AntiPromote DISABLED*', contextInfo }, { quoted: m });
     }
 
     if (action === 'status') {
       const isActive = antiPromoteData[chatId]?.enabled || false;
-      return kaya.sendMessage(m.chat, { text: isActive ? '✅ *AntiPromote ENABLED*' : '❌ *AntiPromote DISABLED*', contextInfo }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: isActive ? '✅ *AntiPromote ENABLED*' : '❌ *AntiPromote DISABLED*', contextInfo }, { quoted: m });
     }
 
-    return kaya.sendMessage(m.chat, { text: 'ℹ️ Usage: .antipromote on/off/status', contextInfo }, { quoted: m });
+    return monarque.sendMessage(m.chat, { text: 'ℹ️ Usage: .antipromote on/off/status', contextInfo }, { quoted: m });
   },
 
-  participantUpdate: async (kaya, update) => {
+  participantUpdate: async (monarque, update) => {
     const chatId = update.id;
     const participants = update.participants;
     const action = update.action;
     if (!antiPromoteData[chatId]?.enabled) return;
     if (action !== 'promote') return;
 
-    const botId = kaya.user.id;
+    const botId = monarque.user.id;
     for (const user of participants) {
       if (user === botId) continue;
       const key = `${chatId}-${user}-promote`;
@@ -75,8 +75,8 @@ export default {
 
       setTimeout(async () => {
         try {
-          await kaya.groupParticipantsUpdate(chatId, [user], 'demote');
-          await kaya.sendMessage(chatId, {
+          await monarque.groupParticipantsUpdate(chatId, [user], 'demote');
+          await monarque.sendMessage(chatId, {
             text: `🚫 *AntiPromote Active*\n@${user.split('@')[0]} has been automatically demoted.`,
             mentions: [user],
             contextInfo
