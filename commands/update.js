@@ -7,12 +7,12 @@ export default {
   category: "Owner",
   ownerOnly: true,
 
-  run: async (kaya, m) => {
+  run: async (monarque, m) => {
 
     // 🔐 Sécurité owner absolue
     if (!m.fromMe) return;
 
-    await kaya.sendMessage(
+    await monarque.sendMessage(
       m.chat,
       { text: "🔄 *Mise à jour en cours depuis GitHub...*" },
       { quoted: m }
@@ -20,14 +20,14 @@ export default {
 
     exec("git pull origin main && npm install --omit=dev", async (err, stdout, stderr) => {
       if (err) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "❌ *Erreur lors de la mise à jour :*\n\n" + err.message },
           { quoted: m }
         );
       }
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           text:
