@@ -13,7 +13,7 @@ export default {
   category: "Owner",
   ownerOnly: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       // ================== TARGET ==================
       let target = null;
@@ -27,7 +27,7 @@ export default {
       else if (args[0]) target = args[0];
 
       if (!target) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⚠️ Mention a number, reply to a message, or type a number." },
           { quoted: m }
@@ -38,7 +38,7 @@ export default {
       const number = target.replace(/\D/g, "");
 
       if (!number) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⚠️ Invalid number." },
           { quoted: m }
@@ -52,7 +52,7 @@ export default {
 
       // ================== CHECK EXISTENCE ==================
       if (!data.OWNERS.includes(number)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: `ℹ️ ${number} is not an owner.` },
           { quoted: m }
@@ -68,7 +68,7 @@ export default {
       global.owner = data.OWNERS;
 
       // ================== CONFIRMATION ==================
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `❌ ${number} is no longer an *OWNER* of the bot.` },
         { quoted: m }
@@ -76,7 +76,7 @@ export default {
 
     } catch (err) {
       console.error("❌ unsudo error:", err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: "❌ Unable to remove the owner." },
         { quoted: m }
