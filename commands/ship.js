@@ -8,12 +8,12 @@ export default {
   description: '💖 Ship deux membres avec un pourcentage d’amour',
   group: true,
 
-  async execute(kaya, m) {
+  async execute(monarque, m) {
     const chatId = m.chat;
 
     try {
       if (!m.isGroup) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '❌ Cette commande fonctionne uniquement en groupe.' },
           { quoted: m }
@@ -24,7 +24,7 @@ export default {
       const participants = metadata.participants.map(p => decodeJid(p.id));
 
       if (participants.length < 2) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '⚠️ Pas assez de membres pour faire un ship.' },
           { quoted: m }
@@ -79,7 +79,7 @@ ${bar}  *${percent}%*
 🍻 Félicitations !
 `;
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         chatId,
         {
           text,
@@ -90,7 +90,7 @@ ${bar}  *${percent}%*
 
     } catch (err) {
       console.error('❌ ship error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         chatId,
         { text: '❌ Erreur lors du ship.' },
         { quoted: m }
