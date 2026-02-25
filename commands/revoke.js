@@ -61,7 +61,7 @@ export default {
 
     } catch (err) {
       console.error('❌ revoke error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to demote this member.', contextInfo },
         { quoted: m }
