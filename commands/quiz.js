@@ -36,13 +36,13 @@ export default {
   category: "Fun",
   description: "Démarre une question trivia en français ou répond à une question en cours",
 
-  async execute(kaya, m, args) {
+  async execute(monarque, m, args) {
     const chatId = m.chat;
 
     // ================== RÉPONSE À UNE QUESTION ==================
     if (args.length > 0) {
       if (!triviaGames[chatId]) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "❌ Aucune partie de trivia en cours. Commence une nouvelle partie avec `.quiz`." },
           { quoted: m }
@@ -61,13 +61,13 @@ export default {
       }
 
       if (isCorrect) {
-        await kaya.sendMessage(
+        await monarque.sendMessage(
           chatId,
           { text: `🎉 Correct ! La réponse est : *${game.correctAnswer}*` },
           { quoted: m }
         );
       } else {
-        await kaya.sendMessage(
+        await monarque.sendMessage(
           chatId,
           { text: `❌ Incorrect ! La bonne réponse était : *${game.correctAnswer}*` },
           { quoted: m }
@@ -80,7 +80,7 @@ export default {
 
     // ================== PARTIE DÉJÀ EN COURS ==================
     if (triviaGames[chatId]) {
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: "⚠️ Une partie est déjà en cours ! Réponds avec `.quiz <numéro ou texte>`." },
         { quoted: m }
@@ -112,7 +112,7 @@ export default {
       const category = he.decode(questionData.category);
       const difficulty = questionData.difficulty.charAt(0).toUpperCase() + questionData.difficulty.slice(1);
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         chatId,
         {
           text: `🧠 *Quiz Time !*\n\nQuestion : ${questionFr}\n\nCatégorie : ${category}\nDifficulté : ${difficulty}\n\nOptions :\n${optionsText}\n\nRéponds avec : .quiz <numéro ou texte>`,
@@ -122,7 +122,7 @@ export default {
 
     } catch (err) {
       console.error("❌ Trivia command error:", err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         chatId,
         { text: "❌ Impossible de récupérer une question. Réessaie plus tard." },
         { quoted: m }
