@@ -21,7 +21,7 @@ export default {
   category: "Owner",
   ownerOnly: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       let targetJid = null;
 
@@ -37,7 +37,7 @@ export default {
         targetJid = args[0].includes("@") ? args[0] : `${args[0]}@s.whatsapp.net`;
 
       if (!targetJid)
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⚠️ Mention a number, reply to a message, or type a number." },
           { quoted: m }
@@ -46,7 +46,7 @@ export default {
       // 🔹 Extraire le numéro pur
       const number = getNumberFromJid(targetJid);
       if (!number)
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "⚠️ Invalid number." },
           { quoted: m }
@@ -58,7 +58,7 @@ export default {
 
       // 🔹 Vérifier si déjà owner
       if (data.OWNERS.includes(number)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: `ℹ️ ${number} is already an owner.` },
           { quoted: m }
@@ -75,7 +75,7 @@ export default {
 
       // 🔹 Mentionner la personne dans le chat
       const jid = `${number}@s.whatsapp.net`;
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `✅ Added as BOT OWNER`, mentions: [jid] },
         { quoted: m }
@@ -83,7 +83,7 @@ export default {
 
     } catch (err) {
       console.error("❌ sudo error:", err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: "❌ Failed to add the owner." },
         { quoted: m }
