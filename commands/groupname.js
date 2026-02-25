@@ -14,7 +14,7 @@ export default {
   ownerOnly: false,
   usage: '.groupname NewName',
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
@@ -22,7 +22,7 @@ export default {
       const sender = decodeJid(m.sender);
 
       if (!args || args.length === 0) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '❌ Usage: `.groupname NewName`', contextInfo },
           { quoted: m }
@@ -32,9 +32,9 @@ export default {
       const newName = args.join(' ').trim();
 
       // 🔐 ADMIN / OWNER check
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (!check.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '🚫 Admin or Owner only.', contextInfo },
           { quoted: m }
@@ -44,7 +44,7 @@ export default {
       // ✏️ Change the group name
       await kaya.groupUpdateSubject(chatId, newName);
 
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         { text: `✅ Group name changed to: *${newName}*`, contextInfo },
         { quoted: m }
@@ -52,7 +52,7 @@ export default {
 
     } catch (err) {
       console.error('❌ groupname error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to change the group name.', contextInfo },
         { quoted: m }
