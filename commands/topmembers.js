@@ -80,12 +80,12 @@ export default {
     description: 'Displays the top 5 most active members',
     group: true,
 
-    async execute(kaya, m) {
+    async execute(monarque, m) {
         const chatId = m.chat;
 
         try {
             if (!m.isGroup) {
-                return kaya.sendMessage(chatId, {
+                return monarque.sendMessage(chatId, {
                     text: '🚫 This command works only in groups.'
                 }, { quoted: m });
             }
