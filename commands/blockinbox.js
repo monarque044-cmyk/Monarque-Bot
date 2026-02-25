@@ -7,12 +7,12 @@ export default {
   category: "Owner",
   ownerOnly: true, // ✅ Managed by handler
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const action = args[0]?.toLowerCase();
 
       if (!["on", "off", "status"].includes(action)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text:
@@ -38,7 +38,7 @@ Prevents the bot from replying in private.`,
         global.blockInbox = true;
         saveConfig({ blockInbox: true });
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: "🚫 *Private messages blocked*\n\nThe bot will no longer reply in private.\n➡️ Only allowed in groups.",
@@ -52,7 +52,7 @@ Prevents the bot from replying in private.`,
         global.blockInbox = false;
         saveConfig({ blockInbox: false });
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: "✅ *Private messages allowed*\n\nThe bot can reply in private again.",
@@ -63,7 +63,7 @@ Prevents the bot from replying in private.`,
       }
 
       if (action === "status") {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: `🔒 *Block Inbox*\n\nStatus: ${
