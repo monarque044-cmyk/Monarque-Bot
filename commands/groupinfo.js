@@ -6,11 +6,11 @@ export default {
   description: 'Displays group information',
   category: 'Groupe',
 
-  async run(kaya, m) {
+  async run(monarque, m) {
     try {
       // ❌ Group only
       if (!m.isGroup) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ This command only works in a group.', contextInfo },
           { quoted: m }
@@ -18,7 +18,7 @@ export default {
       }
 
       // 📋 Group metadata
-      const groupMetadata = await kaya.groupMetadata(m.chat);
+      const groupMetadata = await monarque.groupMetadata(m.chat);
       const participants = groupMetadata.participants;
 
       // 👑 Admins
@@ -36,7 +36,7 @@ export default {
       // 🖼️ Group picture
       let pp;
       try {
-        pp = await kaya.profilePictureUrl(m.chat, 'image');
+        pp = await monarque.profilePictureUrl(m.chat, 'image');
       } catch {
         pp = 'https://i.imgur.com/2wzGhpF.jpeg';
       }
@@ -66,7 +66,7 @@ ${adminList || '• None'}
 `.trim();
 
       // 📤 Send
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           image: { url: pp },
@@ -79,7 +79,7 @@ ${adminList || '• None'}
 
     } catch (err) {
       console.error('❌ groupinfo error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Unable to fetch group information.', contextInfo },
         { quoted: m }
