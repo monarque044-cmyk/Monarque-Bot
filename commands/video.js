@@ -59,10 +59,10 @@ export default {
 	description: 'Download YouTube video',
 	category: 'Download',
 
-	async execute(Kaya, m, args) {
+	async execute(monarque, m, args) {
 		try {
 			if (!args.length) {
-				return Kaya.sendMessage(
+				return monarque.sendMessage(
 					m.chat,
 					{ text: `❌ Usage: \`.video <video name or YouTube link>\`\n\nby ${BOT_NAME}` },
 					{ quoted: m }
@@ -78,7 +78,7 @@ export default {
 			} else {
 				const search = await yts(query);
 				if (!search.videos.length) {
-					return Kaya.sendMessage(
+					return monarque.sendMessage(
 						m.chat,
 						{ text: `❌ No videos found.\n\nby ${BOT_NAME}` },
 						{ quoted: m }
@@ -88,7 +88,7 @@ export default {
 			}
 
 			// Info message
-			await Kaya.sendMessage(
+			await monarque.sendMessage(
 				m.chat,
 				{
 					image: { url: video.thumbnail },
@@ -112,7 +112,7 @@ by ${BOT_NAME}`
 			}
 
 			// Send video (FAST – no buffering)
-			await Kaya.sendMessage(
+			await monarque.sendMessage(
 				m.chat,
 				{
 					video: { url: videoData.download },
@@ -125,7 +125,7 @@ by ${BOT_NAME}`
 
 		} catch (err) {
 			console.error('❌ VIDEO ERROR:', err);
-			await Kaya.sendMessage(
+			await monarque.sendMessage(
 				m.chat,
 				{ text: `❌ Failed to download video.\n\nby ${BOT_NAME}` },
 				{ quoted: m }
