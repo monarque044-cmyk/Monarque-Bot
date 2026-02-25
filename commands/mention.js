@@ -32,23 +32,23 @@ export default {
       // ------------------ TOGGLE ON/OFF ------------------
       if (subCommand === "on" || subCommand === "off") {
         if (!m.fromMe && !m.isOwner)
-          return kaya.sendMessage(chatId, { text: "🚫 Only owners can enable/disable this." }, { quoted: m });
+          return monarque.sendMessage(chatId, { text: "🚫 Only owners can enable/disable this." }, { quoted: m });
 
         const state = loadState();
         state.enabled = subCommand === "on";
         saveState(state);
 
-        return kaya.sendMessage(chatId, { text: `✅ Mention reply ${state.enabled ? "enabled" : "disabled"}.` }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: `✅ Mention reply ${state.enabled ? "enabled" : "disabled"}.` }, { quoted: m });
       }
 
       // ------------------ SET MESSAGE / MEDIA ------------------
       if (subCommand === "setmention") {
         if (!m.fromMe && !m.isOwner)
-          return kaya.sendMessage(chatId, { text: "🚫 Only owners can set the mention message." }, { quoted: m });
+          return monarque.sendMessage(chatId, { text: "🚫 Only owners can set the mention message." }, { quoted: m });
 
         const ctx = m.message?.extendedTextMessage?.contextInfo;
         const qMsg = ctx?.quotedMessage;
-        if (!qMsg) return kaya.sendMessage(chatId, { text: "⚠️ Reply to a message or media to set the mention." }, { quoted: m });
+        if (!qMsg) return monarque.sendMessage(chatId, { text: "⚠️ Reply to a message or media to set the mention." }, { quoted: m });
 
         let type = "sticker", buf, dataType;
 
@@ -58,7 +58,7 @@ export default {
         else if (qMsg.audioMessage) { dataType = "audioMessage"; type = "audio"; }
         else if (qMsg.documentMessage) { dataType = "documentMessage"; type = "file"; }
         else if (qMsg.conversation || qMsg.extendedTextMessage?.text) type = "text";
-        else return kaya.sendMessage(chatId, { text: "⚠️ Unsupported type." }, { quoted: m });
+        else return monarque.sendMessage(chatId, { text: "⚠️ Unsupported type." }, { quoted: m });
 
         if (type === "text") buf = Buffer.from(qMsg.conversation || qMsg.extendedTextMessage?.text || "", "utf8");
         else {
@@ -68,7 +68,7 @@ export default {
           buf = Buffer.concat(chunks);
         }
 
-        if (buf.length > 1024 * 1024) return kaya.sendMessage(chatId, { text: "⚠️ File too large. Max 1MB." }, { quoted: m });
+        if (buf.length > 1024 * 1024) return monarque.sendMessage(chatId, { text: "⚠️ File too large. Max 1MB." }, { quoted: m });
 
         const assetsDir = path.join(process.cwd(), "assets");
         if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
@@ -86,20 +86,20 @@ export default {
         state.type = type;
         saveState(state);
 
-        return kaya.sendMessage(chatId, { text: "✅ Mention reply updated." }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: "✅ Mention reply updated." }, { quoted: m });
       }
 
       // ------------------ HELP ------------------
-      return kaya.sendMessage(chatId, { text: "⚙️ Usage:\n.mention on|off\n.setmention (reply to a message or media)" }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: "⚙️ Usage:\n.mention on|off\n.setmention (reply to a message or media)" }, { quoted: m });
 
     } catch (err) {
       console.error("❌ mention command error:", err);
-      return kaya.sendMessage(m.chat, { text: "⚠️ An error occurred." }, { quoted: m });
+      return monarque.sendMessage(m.chat, { text: "⚠️ An error occurred." }, { quoted: m });
     }
   },
 
   // ------------------ DETECT MENTION ------------------
-  detect: async (kaya, m) => {
+  detect: async (monarque, m) => {
     try {
       if (!m.isGroup || m.key?.fromMe) return;
 
@@ -107,7 +107,7 @@ export default {
       if (!state.enabled) return;
 
       const mentions = m.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
-      if (!mentions.includes(kaya.user.jid)) return;
+      if (!mentions.includes(monarque.user.jid)) return;
 
       // Reply with the stored asset
       const assetPath = state.assetPath;
@@ -115,22 +115,22 @@ export default {
 
       if (state.type === "text") {
         const text = fs.readFileSync(assetPath, "utf8");
-        await kaya.sendMessage(m.chat, { text }, { quoted: m });
+        await monarque.sendMessage(m.chat, { text }, { quoted: m });
       } else if (state.type === "sticker") {
         const buffer = fs.readFileSync(assetPath);
-        await kaya.sendMessage(m.chat, { sticker: buffer }, { quoted: m });
+        await monarque.sendMessage(m.chat, { sticker: buffer }, { quoted: m });
       } else if (state.type === "image") {
         const buffer = fs.readFileSync(assetPath);
-        await kaya.sendMessage(m.chat, { image: buffer }, { quoted: m });
+        await monarque.sendMessage(m.chat, { image: buffer }, { quoted: m });
       } else if (state.type === "video") {
         const buffer = fs.readFileSync(assetPath);
-        await kaya.sendMessage(m.chat, { video: buffer }, { quoted: m });
+        await monarque.sendMessage(m.chat, { video: buffer }, { quoted: m });
       } else if (state.type === "audio") {
         const buffer = fs.readFileSync(assetPath);
-        await kaya.sendMessage(m.chat, { audio: buffer }, { quoted: m });
+        await monarque.sendMessage(m.chat, { audio: buffer }, { quoted: m });
       } else if (state.type === "file") {
         const buffer = fs.readFileSync(assetPath);
-        await kaya.sendMessage(m.chat, { document: buffer, fileName: path.basename(assetPath) }, { quoted: m });
+        await monarque.sendMessage(m.chat, { document: buffer, fileName: path.basename(assetPath) }, { quoted: m });
       }
 
     } catch (err) {
