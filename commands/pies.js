@@ -49,7 +49,7 @@ export default {
 
     // ❌ Vérification de l’argument
     if (!sub) {
-      return kaya.sendMessage(chatId, {
+      return monarque.sendMessage(chatId, {
         text: `🌍 *Usage de la commande PIES*\n\n` +
               `Syntaxe: .pies <country>\n` +
               `Countries disponibles (${VALID_COUNTRIES.length}):\n` +
@@ -59,7 +59,7 @@ export default {
 
     // ❌ Country invalide
     if (!VALID_COUNTRIES.includes(sub)) {
-      return kaya.sendMessage(chatId, {
+      return monarque.sendMessage(chatId, {
         text: `❌ *Pays invalide:* ${sub}\nEssayez l’un de ces pays:\n${formatCountries(VALID_COUNTRIES)}`
       }, { quoted: m });
     }
@@ -69,14 +69,14 @@ export default {
       const imageBuffer = await fetchPiesImageBuffer(sub);
 
       // 🔹 Envoi de l’image
-      await kaya.sendMessage(chatId, {
+      await monarque.sendMessage(chatId, {
         image: imageBuffer,
         caption: `🖼️ Voici une image de pies pour: *${sub.toUpperCase()}*`,
       }, { quoted: m });
 
     } catch (err) {
       console.error(`❌ Erreur dans la commande pies (${sub}):`, err);
-      await kaya.sendMessage(chatId, {
+      await monarque.sendMessage(chatId, {
         text: '❌ Impossible de récupérer l’image. Réessayez plus tard !'
       }, { quoted: m });
     }
