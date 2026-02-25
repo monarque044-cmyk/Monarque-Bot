@@ -28,12 +28,12 @@ export default {
   admin: true,
   ownerOnly: false,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const chatId = decodeJid(m.chat);
       const sender = decodeJid(m.sender);
 
-      const permissions = await checkAdminOrOwner(kaya, chatId, sender);
+      const permissions = await checkAdminOrOwner(monarque, chatId, sender);
       if (!permissions.isAdmin && !permissions.isOwner) return;
 
       const subCmd = args[0]?.toLowerCase();
@@ -44,7 +44,7 @@ export default {
       if (subCmd === "on" || subCmd === "1") {
         byeData[chatId] = true;
         saveByeData();
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           {
             image: { url: groupPP },
@@ -58,7 +58,7 @@ export default {
       if (subCmd === "off" || subCmd === "0") {
         delete byeData[chatId];
         saveByeData();
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           {
             image: { url: groupPP },
@@ -72,7 +72,7 @@ export default {
       if (subCmd === "all") {
         byeData.global = true;
         saveByeData();
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "✅ BYE global activé.", contextInfo },
           { quoted: m }
@@ -82,7 +82,7 @@ export default {
       if (subCmd === "alloff") {
         delete byeData.global;
         saveByeData();
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: "❌ BYE global désactivé.", contextInfo },
           { quoted: m }
@@ -97,7 +97,7 @@ export default {
           ? "✅ Activé ici"
           : "❌ Désactivé ici";
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           {
             text: `📊 *STATUT BYE*\n\n${globalStatus}\n${groupStatus}`,
@@ -107,7 +107,7 @@ export default {
         );
       }
 
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         {
           text:
@@ -121,7 +121,7 @@ export default {
       );
     } catch (err) {
       console.error("❌ Erreur bye run :", err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: `❌ Erreur bye : ${err.message}`, contextInfo },
         { quoted: m }
@@ -129,7 +129,7 @@ export default {
     }
   },
 
-  participantUpdate: async (kaya, update) => {
+  participantUpdate: async (monarque, update) => {
     try {
       const chatId = decodeJid(update.id);
       const { participants, action } = update;
@@ -137,7 +137,7 @@ export default {
       if (action !== "remove") return;
       if (!byeData.global && !byeData[chatId]) return;
 
-      const metadata = await kaya.groupMetadata(chatId).catch(() => null);
+      const metadata = await monarque.groupMetadata(chatId).catch(() => null);
       if (!metadata) return;
 
       for (const user of participants) {
@@ -146,11 +146,11 @@ export default {
             typeof user === "string" ? user : decodeJid(user.id || user);
           const username = "@" + userJid.split("@")[0];
 
-          const userPP = await kaya
+          const userPP = await monarque
             .profilePictureUrl(userJid, "image")
             .catch(() => null);
 
-          const groupPP = await kaya
+          const groupPP = await monarque
             .profilePictureUrl(chatId, "image")
             .catch(() => "https://i.imgur.com/3XjWdoI.png");
 
@@ -160,7 +160,7 @@ export default {
             membersCount: metadata.participants.length
           });
 
-          await kaya.sendMessage(chatId, {
+          await monarque.sendMessage(chatId, {
             image: { url: userPP || groupPP },
             caption: byeText,
             mentions: [userJid],
