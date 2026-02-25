@@ -10,7 +10,7 @@ export default {
   category: 'Fun',
   ownerOnly: false,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     const chatId = m.chat;
     const senderId = m.sender;
     const text = args.join(' ');
@@ -23,7 +23,7 @@ export default {
       );
 
       if (existingGame && !/^(surrender|give up)$/i.test(text)) {
-        return kaya.sendMessage(chatId, { text: '❌ Tu es déjà dans une partie. Tape *surrender* pour abandonner.' }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: '❌ Tu es déjà dans une partie. Tape *surrender* pour abandonner.' }, { quoted: m });
       }
 
       // 🔹 Si c’est un surrender ou coup, on gère le move
@@ -56,27 +56,27 @@ export default {
         };
         if (text) room.name = text;
 
-        await kaya.sendMessage(chatId, { text: `⏳ En attente d’un adversaire...\nTape *.ttt ${text || ''}* pour rejoindre !` });
+        await monarque.sendMessage(chatId, { text: `⏳ En attente d’un adversaire...\nTape *.ttt ${text || ''}* pour rejoindre !` });
 
         games[room.id] = room;
       }
 
     } catch (err) {
       console.error('❌ Erreur TicTacToe :', err);
-      await kaya.sendMessage(chatId, { text: '❌ Impossible de lancer la partie. Réessaie.' }, { quoted: m });
+      await monarque.sendMessage(chatId, { text: '❌ Impossible de lancer la partie. Réessaie.' }, { quoted: m });
     }
   }
 };
 
 // 🔹 Fonction pour gérer les coups
-async function handleMove(kaya, m, room, text, senderId) {
+async function handleMove(monarque, m, room, text, senderId) {
   const chatId = m.chat;
   const isSurrender = /^(surrender|give up)$/i.test(text);
 
   if (!isSurrender && !/^[1-9]$/.test(text)) return;
 
   if (senderId !== room.game.currentTurn && !isSurrender) {
-    return kaya.sendMessage(chatId, { text: '❌ Ce n’est pas ton tour !' }, { quoted: m });
+    return monarque.sendMessage(chatId, { text: '❌ Ce n’est pas ton tour !' }, { quoted: m });
   }
 
   let ok = isSurrender ? true : room.game.turn(senderId === room.game.playerO, parseInt(text) - 1);
@@ -100,7 +100,7 @@ async function handleMove(kaya, m, room, text, senderId) {
 }
 
 // 🔹 Fonction pour afficher le plateau
-async function sendBoard(kaya, room, title = null, winner = null, isTie = false) {
+async function sendBoard(monarque, room, title = null, winner = null, isTie = false) {
   const arr = room.game.render().map(v => ({
     'X': '❎', 'O': '⭕',
     '1': '1️⃣', '2': '2️⃣', '3': '3️⃣',
@@ -130,6 +130,6 @@ ${!winner && !isTie ? '• Tape un chiffre (1-9) pour jouer\n• Tape *surrender
 
   const mentions = [room.game.playerX, room.game.playerO, ...(winner ? [winner] : [room.game.currentTurn])];
 
-  await kaya.sendMessage(room.x, { text: str, mentions });
+  await monarque.sendMessage(room.x, { text: str, mentions });
   if (room.x !== room.o && room.o) await kaya.sendMessage(room.o, { text: str, mentions });
 }
