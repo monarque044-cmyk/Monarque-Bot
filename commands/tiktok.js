@@ -13,11 +13,11 @@ export default {
   description: 'Download a TikTok video without watermark.',
   category: 'Download',
 
-  async run(kaya, m, args, store) {
+  async run(monarque, m, args, store) {
     const query = args.join(" ");
 
     if (!query) {
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         {
           text: `❌ No link detected!\nUsage: tiktok https://vm.tiktok.com/xxx`,
@@ -31,7 +31,7 @@ export default {
       const data = await Tiktok(query);
 
       if (!data?.nowm) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ Unable to retrieve the TikTok video.', contextInfo },
           { quoted: m }
@@ -53,7 +53,7 @@ export default {
 
       fs.writeFileSync(filePath, res.data);
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           video: { url: filePath },
@@ -71,7 +71,7 @@ By: KAYA-MD`,
 
     } catch (err) {
       console.error('❌ TikTok Error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: `❌ Error: ${err.message || "Unknown"}`, contextInfo },
         { quoted: m }
