@@ -13,7 +13,7 @@ export default {
   botAdmin: true,
   usage: '.resetlink',
 
-  run: async (kaya, m) => {
+  run: async (monarque, m) => {
     try {
       if (!m.isGroup) return;
 
@@ -21,9 +21,9 @@ export default {
       const sender = decodeJid(m.sender);
 
       // 🔐 Check ADMIN / OWNER
-      const check = await checkAdminOrOwner(kaya, chatId, sender);
+      const check = await checkAdminOrOwner(monarque, chatId, sender);
       if (!check.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           chatId,
           { text: '🚫 Only group Admins or the Owner can use this command.', contextInfo },
           { quoted: m }
@@ -33,7 +33,7 @@ export default {
       // 🔁 Reset the invite link (without displaying it)
       await kaya.groupRevokeInvite(chatId);
 
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         chatId,
         {
           text: '✅ The group invite link has been successfully reset!',
@@ -44,7 +44,7 @@ export default {
 
     } catch (err) {
       console.error('❌ resetlink error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred while resetting the group link.', contextInfo },
         { quoted: m }
