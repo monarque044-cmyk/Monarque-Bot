@@ -6,12 +6,12 @@ export default {
     category: 'Image',
     description: 'Allows viewing and saving a “view-once” image or video',
 
-    async execute(kaya, m, args) {
+    async execute(monarque, m, args) {
         const chatId = m.chat;
         try {
             const quoted = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
             if (!quoted) {
-                return await kaya.sendMessage(
+                return await monarque.sendMessage(
                     chatId, 
                     { text: '❌ Please reply to a view-once image or video.' }, 
                     { quoted: m }
@@ -24,7 +24,7 @@ export default {
                 let buffer = Buffer.from([]);
                 for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
 
-                return await kaya.sendMessage(
+                return await monarque.sendMessage(
                     chatId,
                     {
                         image: buffer,
@@ -41,7 +41,7 @@ export default {
                 let buffer = Buffer.from([]);
                 for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
 
-                return await kaya.sendMessage(
+                return await monarque.sendMessage(
                     chatId,
                     {
                         video: buffer,
@@ -52,7 +52,7 @@ export default {
                 );
             }
 
-            return await kaya.sendMessage(
+            return await monarque.sendMessage(
                 chatId,
                 { text: '❌ The quoted message is not a view-once image or video.' },
                 { quoted: m }
@@ -60,7 +60,7 @@ export default {
 
         } catch (err) {
             console.error('❌ viewonce command error:', err);
-            await kaya.sendMessage(
+            await monarque.sendMessage(
                 chatId,
                 { text: '❌ Unable to retrieve the view-once media.' },
                 { quoted: m }
