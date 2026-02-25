@@ -31,14 +31,14 @@ export default {
   category: 'Owner',
   ownerOnly: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const action = args[0]?.toLowerCase();
       const config = loadConfig();
 
       // Show help
       if (!['on', 'off', 'status', 'react'].includes(action)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: `👁️ *Auto Status*
@@ -65,9 +65,9 @@ The bot will automatically view statuses and can react to them and forward them 
         // Attach listener once
         if (!global.autoStatusListenerAttached) {
           global.autoStatusListenerAttached = true;
-          const ownerJid = kaya.user.id.split(':')[0] + '@s.whatsapp.net';
+          const ownerJid = monarque.user.id.split(':')[0] + '@s.whatsapp.net';
 
-          kaya.ev.on('stories.update', async (updates) => {
+          monarque.ev.on('stories.update', async (updates) => {
             if (!config.enabled) return;
 
             for (const update of updates) {
@@ -79,11 +79,11 @@ The bot will automatically view statuses and can react to them and forward them 
                 const sender = key.participant || key.remoteJid;
 
                 // Mark as seen
-                await kaya.sendReadReceipt(key.remoteJid, sender, [key.id]);
+                await monarque.sendReadReceipt(key.remoteJid, sender, [key.id]);
 
                 // React if enabled
                 if (config.reactOn) {
-                  await kaya.relayMessage(
+                  await monarque.relayMessage(
                     'status@broadcast',
                     {
                       reactionMessage: {
@@ -97,19 +97,19 @@ The bot will automatically view statuses and can react to them and forward them 
 
                 // Forward to owner
                 if (msg.imageMessage) {
-                  await kaya.sendMessage(ownerJid, {
+                  await monarque.sendMessage(ownerJid, {
                     image: { url: msg.imageMessage },
                     caption: `👁️ Status from @${sender.split('@')[0]}`,
                     mentions: [sender]
                   });
                 } else if (msg.videoMessage) {
-                  await kaya.sendMessage(ownerJid, {
+                  await monarque.sendMessage(ownerJid, {
                     video: { url: msg.videoMessage },
                     caption: `👁️ Status from @${sender.split('@')[0]}`,
                     mentions: [sender]
                   });
                 } else if (msg.conversation) {
-                  await kaya.sendMessage(ownerJid, {
+                  await monarque.sendMessage(ownerJid, {
                     text: `👁️ Status from @${sender.split('@')[0]}:\n\n${msg.conversation}`,
                     mentions: [sender]
                   });
@@ -121,7 +121,7 @@ The bot will automatically view statuses and can react to them and forward them 
           });
         }
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '✅ *Auto Status enabled*', contextInfo },
           { quoted: m }
@@ -132,7 +132,7 @@ The bot will automatically view statuses and can react to them and forward them 
       if (action === 'off') {
         config.enabled = false;
         saveConfig(config);
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ *Auto Status disabled*', contextInfo },
           { quoted: m }
@@ -141,7 +141,7 @@ The bot will automatically view statuses and can react to them and forward them 
 
       // Check status
       if (action === 'status') {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: `👁️ *Auto Status*\nStatus: ${config.enabled ? '✅ ENABLED' : '❌ DISABLED'}\nReactions: ${config.reactOn ? '💚 ENABLED' : '❌ DISABLED'}`,
@@ -155,7 +155,7 @@ The bot will automatically view statuses and can react to them and forward them 
       if (action === 'react') {
         const sub = args[1]?.toLowerCase();
         if (!['on', 'off'].includes(sub)) {
-          return kaya.sendMessage(
+          return monarque.sendMessage(
             m.chat,
             { text: '❌ Usage: .autostatus react on/off', contextInfo },
             { quoted: m }
@@ -163,7 +163,7 @@ The bot will automatically view statuses and can react to them and forward them 
         }
         config.reactOn = sub === 'on';
         saveConfig(config);
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: `💫 Status reactions ${config.reactOn ? 'enabled' : 'disabled'}`, contextInfo },
           { quoted: m }
@@ -171,7 +171,7 @@ The bot will automatically view statuses and can react to them and forward them 
       }
     } catch (err) {
       console.error('❌ autostatus error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred while executing the command.', contextInfo },
         { quoted: m }
