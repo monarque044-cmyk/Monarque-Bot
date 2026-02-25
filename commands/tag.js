@@ -25,15 +25,15 @@ export default {
   group: true,
   admin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) 
-        return kaya.sendMessage(m.chat, { text: '❌ This command only works in groups.' }, { quoted: m });
+        return monarque.sendMessage(m.chat, { text: '❌ This command only works in groups.' }, { quoted: m });
 
       // ✅ Vérification admin / owner
-      const perms = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const perms = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!perms.isAdminOrOwner)
-        return kaya.sendMessage(m.chat, { text: '⛔ Only admins or owner can use this command.' }, { quoted: m });
+        return monarque.sendMessage(m.chat, { text: '⛔ Only admins or owner can use this command.' }, { quoted: m });
 
       const groupMetadata = await kaya.groupMetadata(m.chat);
       const mentionedJidList = groupMetadata.participants.map(p => p.id || p.jid).filter(Boolean);
@@ -79,11 +79,11 @@ export default {
         };
       }
 
-      await kaya.sendMessage(m.chat, messageContent, { quoted: m });
+      await monarque.sendMessage(m.chat, messageContent, { quoted: m });
 
     } catch (err) {
       console.error('❌ Tag command error:', err);
-      await kaya.sendMessage(m.chat, { text: '❌ Error occurred while sending the tag.' }, { quoted: m });
+      await monarque.sendMessage(m.chat, { text: '❌ Error occurred while sending the tag.' }, { quoted: m });
     }
   }
 };
