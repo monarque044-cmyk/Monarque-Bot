@@ -6,11 +6,11 @@ export default {
   description: 'Get WhatsApp Channel ID from channel link',
   category: 'Groupe',
 
-  async execute(Kaya, m, args) {
+  async execute(monarque, m, args) {
     try {
       // ❌ No link provided
       if (!args[0]) {
-        return Kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text:
@@ -24,7 +24,7 @@ export default {
       // 🔎 Extract channel invite code
       const match = args[0].match(/channel\/([A-Za-z0-9]+)/);
       if (!match) {
-        return Kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: '❌ Invalid WhatsApp Channel link.',
@@ -37,10 +37,10 @@ export default {
       const inviteCode = match[1];
 
       // 📡 Fetch channel metadata
-      const info = await Kaya.newsletterMetadata('invite', inviteCode);
+      const info = await monarque.newsletterMetadata('invite', inviteCode);
 
       if (!info?.id) {
-        return Kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: '❌ Unable to fetch Channel ID.',
@@ -51,7 +51,7 @@ export default {
       }
 
       // ✅ Send Channel ID
-      await Kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           text: `✅ *WhatsApp Channel ID*\n\n${info.id}@newsletter`,
@@ -62,7 +62,7 @@ export default {
 
     } catch (err) {
       console.error('❌ CHANNELID ERROR:', err);
-      await Kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           text: '❌ Error while retrieving Channel ID.',
