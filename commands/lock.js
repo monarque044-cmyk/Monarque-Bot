@@ -9,12 +9,12 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, msg, store, args) => {
+  run: async (monarque, m, msg, store, args) => {
     try {
       // 🔹 Check admin / owner
-      const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           {
             text: '🚫 Access denied: Only admins or owners can use this command.',
@@ -25,7 +25,7 @@ export default {
       }
 
       // 🔹 Lock the group (announcement mode)
-      await kaya.groupSettingUpdate(m.chat, 'announcement');
+      await monarque.groupSettingUpdate(m.chat, 'announcement');
 
       const text = `
 ╭━━〔🔒 GROUP LOCKED〕━━⬣
@@ -34,7 +34,7 @@ export default {
 ╰━━━━━━━━━━━━━━━━━━━━⬣
       `.trim();
 
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text, mentions: [m.sender], contextInfo },
         { quoted: m }
@@ -42,7 +42,7 @@ export default {
 
     } catch (err) {
       console.error('❌ lock.js error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           text: '❌ Unable to lock the group. Make sure I am an admin.',
