@@ -7,7 +7,7 @@ export default {
 	description: 'Generate a video from your prompt using AI',
 	category: 'AI',
 
-	async execute(Kaya, m, args) {
+	async execute(monarque, m, args) {
 		try {
 			// Get raw text from message or quoted message
 			const rawText =
@@ -26,7 +26,7 @@ export default {
 			const prompt = argsText || quotedText;
 
 			if (!prompt) {
-				return Kaya.sendMessage(
+				return monarque.sendMessage(
 					m.chat,
 					{ text: `❌ Provide a prompt. Example: .sora anime girl with short blue hair\n\nby ${BOT_NAME}` },
 					{ quoted: m }
@@ -46,7 +46,7 @@ export default {
 			}
 
 			// Send video
-			await Kaya.sendMessage(
+			await monarque.sendMessage(
 				m.chat,
 				{
 					video: { url: videoUrl },
@@ -58,7 +58,7 @@ export default {
 
 		} catch (err) {
 			console.error('[SORA] Error:', err?.message || err);
-			await Kaya.sendMessage(
+			await monarque.sendMessage(
 				m.chat,
 				{ text: `❌ Failed to generate video. Try a different prompt later.\n\nby ${BOT_NAME}` },
 				{ quoted: m }
