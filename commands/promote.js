@@ -9,14 +9,14 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
       // 🔹 Vérification admin / owner
       const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "🚫 Seuls les Admins ou le Propriétaire peuvent utiliser `.promote`." }
         );
@@ -38,17 +38,17 @@ export default {
         target = args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net';
       }
 
-      if (!target) return kaya.sendMessage(m.chat, { text: "⚠️ Cible introuvable pour promotion." });
+      if (!target) return monarque.sendMessage(m.chat, { text: "⚠️ Cible introuvable pour promotion." });
 
       // ✅ Promotion silencieuse
-      await kaya.groupParticipantsUpdate(m.chat, [target], 'promote');
+      await monarque.groupParticipantsUpdate(m.chat, [target], 'promote');
 
       // ❌ Aucun message envoyé au groupe
       return;
 
     } catch (err) {
       console.error('❌ Erreur promote:', err);
-      return kaya.sendMessage(m.chat, { text: '❌ Impossible de promouvoir ce membre.' });
+      return monarque.sendMessage(m.chat, { text: '❌ Impossible de promouvoir ce membre.' });
     }
   }
 };
