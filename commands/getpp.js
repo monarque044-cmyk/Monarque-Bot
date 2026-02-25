@@ -8,7 +8,7 @@ export default {
   category: 'Owner',
   ownerOnly: true, // Only the owner can use it
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       // ==================== TARGET ====================
       let target = null;
@@ -27,7 +27,7 @@ export default {
       }
 
       if (!target) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ Mention a number, reply to a message, or type a number.' },
           { quoted: m }
@@ -39,7 +39,7 @@ export default {
       try {
         pfpUrl = await kaya.profilePictureUrl(target, 'image');
       } catch {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ The user has no profile picture or it is private.' },
           { quoted: m }
@@ -47,7 +47,7 @@ export default {
       }
 
       // ==================== SEND PHOTO ====================
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         {
           image: { url: pfpUrl },
@@ -59,7 +59,7 @@ export default {
 
     } catch (err) {
       console.error('❌ getpp error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred.' },
         { quoted: m }
