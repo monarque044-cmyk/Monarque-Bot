@@ -7,13 +7,13 @@ export default {
   category: 'Fun',
   usage: '.gif <mot>',
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     const chatId = m.chat;
     const query = args.join(' ').trim();
     const apiKey = 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq';
 
     if (!query)
-      return kaya.sendMessage(chatId, { text: '❌ Donne un mot-clé.' }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: '❌ Donne un mot-clé.' }, { quoted: m });
 
     try {
       const { data } = await axios.get('https://api.giphy.com/v1/gifs/search', {
@@ -28,12 +28,12 @@ export default {
       const gif = data.data[0];
 
       if (!gif) {
-        return kaya.sendMessage(chatId, { text: '⚠️ Aucun GIF trouvé.' }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: '⚠️ Aucun GIF trouvé.' }, { quoted: m });
       }
 
       const mp4Url = gif.images.original_mp4.mp4;
 
-      await kaya.sendMessage(chatId, {
+      await monarque.sendMessage(chatId, {
         video: { url: mp4Url },
         gifPlayback: true,
         caption: `🎬 GIF: ${query}`
@@ -41,7 +41,7 @@ export default {
 
     } catch (err) {
       console.error('[GIF ERROR]', err);
-      return kaya.sendMessage(chatId, { text: '❌ Erreur GIF.' }, { quoted: m });
+      return monarque.sendMessage(chatId, { text: '❌ Erreur GIF.' }, { quoted: m });
     }
   }
 };
