@@ -9,22 +9,22 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       if (!m.isGroup) return;
 
       // ✅ Vérification admin / owner
-      const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: "🚫 Seuls les Admins ou le Propriétaire peuvent utiliser `.purge`." }
         );
       }
 
       // ✅ Récupère metadata du groupe
-      const groupMetadata = await kaya.groupMetadata(m.chat);
-      const botNumber = kaya.user.id.split(":")[0] + "@s.whatsapp.net";
+      const groupMetadata = await monarque.groupMetadata(m.chat);
+      const botNumber = monarque.user.id.split(":")[0] + "@s.whatsapp.net";
 
       // ✅ Liste des membres à expulser (non admins et non bot)
       const toKick = groupMetadata.participants
@@ -35,7 +35,7 @@ export default {
 
       // ✅ Expulsion silencieuse
       for (const user of toKick) {
-        await kaya.groupParticipantsUpdate(m.chat, [user], "remove");
+        await monarque.groupParticipantsUpdate(m.chat, [user], "remove");
         await new Promise(r => setTimeout(r, 1000)); // pause pour éviter spam serveur
       }
 
