@@ -6,7 +6,7 @@ export default {
     alias: ['rip', 'dead'],
     category: 'Fun',
     description: 'Ajoute l’effet Wasted sur la photo de profil d’un utilisateur',
-    async execute(kaya, m, args) {
+    async execute(monarque, m, args) {
         const chatId = m.chat;
         let userToWaste;
 
@@ -27,7 +27,7 @@ export default {
             // Récupère la photo de profil
             let profilePic;
             try {
-                profilePic = await kaya.profilePictureUrl(userToWaste, 'image');
+                profilePic = await monarque.profilePictureUrl(userToWaste, 'image');
             } catch {
                 profilePic = 'https://i.imgur.com/2wzGhpF.jpeg'; // Image par défaut
             }
@@ -39,7 +39,7 @@ export default {
             );
 
             // Envoie l'image avec mention
-            await kaya.sendMessage(chatId, {
+            await monarque.sendMessage(chatId, {
                 image: Buffer.from(response.data),
                 caption: `⚰️ *Wasted* : @${userToWaste.split('@')[0]} 💀\nRest in pieces!`,
                 mentions: [userToWaste]
@@ -47,7 +47,7 @@ export default {
 
         } catch (err) {
             console.error('❌ wasted command error:', err);
-            await kaya.sendMessage(chatId, { text: '❌ Impossible de créer l’image Wasted. Réessaie plus tard.' }, { quoted: m });
+            await monarque.sendMessage(chatId, { text: '❌ Impossible de créer l’image Wasted. Réessaie plus tard.' }, { quoted: m });
         }
     }
 };
