@@ -24,7 +24,7 @@ export default {
   owner: true,
   usage: ".mention on|off / .setmention (reply to message or media)",
 
-  async execute(kaya, m, args) {
+  async execute(monarque, m, args) {
     try {
       const chatId = m.chat;
       const subCommand = args[0]?.toLowerCase();
