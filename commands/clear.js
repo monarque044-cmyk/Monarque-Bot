@@ -3,7 +3,7 @@ export default {
   description: 'Supprime tout le contenu envoyé par le bot (comme WhatsApp)',
   category: 'Owner',
 
-  async run(kaya, m, msg, store) {
+  async run(monarque, m, msg, store) {
     // 🔐 Owner uniquement (comme tu l’as demandé)
     if (!m.fromMe) return;
 
@@ -14,7 +14,7 @@ export default {
 
     for (const data of chatMessages.values()) {
       if (data.key?.fromMe) {
-        await kaya.sendMessage(chatId, {
+        await monarque.sendMessage(chatId, {
           delete: {
             remoteJid: chatId,
             fromMe: true,
