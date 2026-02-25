@@ -74,7 +74,7 @@ export default {
 
       await sock.sendMessage(m.chat, {
         image: res.data,
-        caption: '✨ *Image améliorée avec succès !*\n\n𝗞𝗔𝗬𝗔-𝗠𝗗'
+        caption: '✨ *Image améliorée avec succès !*\n\nMONARQUE-𝗠𝗗'
       }, { quoted: m });
 
     } catch (err) {
