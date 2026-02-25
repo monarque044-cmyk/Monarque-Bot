@@ -16,11 +16,11 @@ export default {
   ownerOnly: false,
   group: false,
 
-  run: async (kaya, m) => {
+  run: async (monarque, m) => {
     try {
       const start = Date.now();
 
-      await kaya.sendMessage(m.chat, { text: '🏓 Pong...' }, { quoted: m });
+      await monarque.sendMessage(m.chat, { text: '🏓 Pong...' }, { quoted: m });
 
       const latency = Date.now() - start;
       const uptime = formatUptime(process.uptime());
@@ -51,7 +51,7 @@ export default {
 
     } catch (err) {
       console.error('❌ ping.js error:', err);
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '⚠️ Unable to check latency. Please try again.' },
         { quoted: m }
