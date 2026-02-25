@@ -60,7 +60,7 @@ export default {
   category: 'General',
   description: 'Menu command',
 
-  async execute(Kaya, m) {
+  async execute(monarque, m) {
     const mode = global.privateMode ? 'PRIVATE' : 'PUBLIC'; // ✅ reflète le vrai état
     const prefix = config.PREFIX || '.';
 
@@ -124,7 +124,7 @@ export default {
     };
 
     // ===================== SEND MENU =====================
-    await Kaya.sendMessage(
+    await monarque.sendMessage(
       m.chat,
       {
         text: menuText,
