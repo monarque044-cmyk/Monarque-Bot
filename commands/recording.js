@@ -30,7 +30,7 @@ export default {
         saveBotModes(global.botModes);
 
         // Trigger presence for confirmation
-        await kaya.sendPresenceUpdate('recording', m.chat);
+        await monarque.sendPresenceUpdate('recording', m.chat);
         setTimeout(() => monarque.sendPresenceUpdate('paused', m.chat), 2000);
 
         return monarque.sendMessage(
