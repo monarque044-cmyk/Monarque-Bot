@@ -9,7 +9,7 @@ export default {
   description: 'Shows the bot GitHub repository',
   category: 'General',
 
-  async execute(kaya, m) {
+  async execute(monarque, m) {
     await sendWithBotImage(
       kaya,
       m.chat,
