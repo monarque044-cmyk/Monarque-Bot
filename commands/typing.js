@@ -7,11 +7,11 @@ export default {
   category: 'Owner',
   ownerOnly: true, // ✅ handled by the handler
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const action = args[0]?.toLowerCase();
       if (!['on', 'off', 'status'].includes(action)) {
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ Usage: .typing on|off|status', contextInfo },
           { quoted: m }
@@ -27,8 +27,8 @@ export default {
         saveBotModes(global.botModes);
 
         // Trigger immediately to confirm
-        await kaya.sendPresenceUpdate('composing', m.chat);
-        setTimeout(() => kaya.sendPresenceUpdate('paused', m.chat), 2000);
+        await monarque.sendPresenceUpdate('composing', m.chat);
+        setTimeout(() => monarque.sendPresenceUpdate('paused', m.chat), 2000);
 
         return kaya.sendMessage(
           m.chat,
@@ -45,9 +45,9 @@ export default {
         saveBotModes(global.botModes);
 
         // Stop immediately
-        await kaya.sendPresenceUpdate('paused', m.chat);
+        await monarque.sendPresenceUpdate('paused', m.chat);
 
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: '❌ "Typing" mode disabled.', contextInfo },
           { quoted: m }
@@ -56,7 +56,7 @@ export default {
 
       if (action === 'status') {
         const isActive = global.botModes.typing;
-        return kaya.sendMessage(
+        return monarque.sendMessage(
           m.chat,
           { text: `📊 Typing mode: ${isActive ? '✅ ENABLED' : '❌ DISABLED'}`, contextInfo },
           { quoted: m }
@@ -65,7 +65,7 @@ export default {
 
     } catch (err) {
       console.error('❌ typing.js error:', err);
-      return kaya.sendMessage(
+      return monarque.sendMessage(
         m.chat,
         { text: '❌ An error occurred.', contextInfo },
         { quoted: m }
