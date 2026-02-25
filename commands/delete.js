@@ -8,21 +8,21 @@ export default {
   group: true,
   admin: true,
 
-  run: async (kaya, m, args) => {
+  run: async (monarque, m, args) => {
     try {
       const chatId = m.chat;
 
       if (!m.isGroup)
-        return kaya.sendMessage(chatId, { text: '❌ Groupe uniquement.' }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: '❌ Groupe uniquement.' }, { quoted: m });
 
-      const check = await checkAdminOrOwner(kaya, chatId, m.sender);
+      const check = await checkAdminOrOwner(monarque, chatId, m.sender);
       if (!check.isAdmin && !check.isOwner)
-        return kaya.sendMessage(chatId, { text: '🚫 Admin seulement.' }, { quoted: m });
+        return monarque.sendMessage(chatId, { text: '🚫 Admin seulement.' }, { quoted: m });
 
       // ===== CAS REPLY =====
       const ctx = m.message?.extendedTextMessage?.contextInfo;
       if (ctx?.stanzaId) {
-        await kaya.sendMessage(chatId, {
+        await monarque.sendMessage(chatId, {
           delete: {
             remoteJid: chatId,
             fromMe: false,
@@ -34,7 +34,7 @@ export default {
       }
 
       // ===== CAS SIMPLE =====
-      await kaya.sendMessage(chatId, { delete: m.key }).catch(() => {});
+      await monarque.sendMessage(chatId, { delete: m.key }).catch(() => {});
 
     } catch (err) {
       console.error('[DEL ERROR]', err);
