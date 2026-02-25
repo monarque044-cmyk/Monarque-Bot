@@ -24,7 +24,7 @@ export default {
         m.chat,
         {
           image: { url: res.data.url },
-          caption: '💖 *Waifu générée pour toi*\n\n> *_KAYA-MD_*'
+          caption: '💖 *Waifu générée pour toi*\n\n> *_MONARQUE-MD_*'
         },
         { quoted: m }
       );
