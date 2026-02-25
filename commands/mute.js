@@ -9,14 +9,14 @@ export default {
   admin: true,
   botAdmin: true,
 
-  run: async (kaya, m) => {
+  run: async (monarque, m) => {
     try {
       // 🔹 Check if user is admin or owner
-      const permissions = await checkAdminOrOwner(kaya, m.chat, m.sender);
+      const permissions = await checkAdminOrOwner(monarque, m.chat, m.sender);
       if (!permissions.isAdminOrOwner) return;
 
       // 🔒 Lock group (only admins can talk)
-      await kaya.groupSettingUpdate(m.chat, 'announcement');
+      await monarque.groupSettingUpdate(m.chat, 'announcement');
 
       // ✅ SILENT MODE → NO MESSAGE SENT
 
@@ -24,7 +24,7 @@ export default {
       console.error('❌ lock.js error:', err);
 
       // ❌ Only send message if there is an error
-      await kaya.sendMessage(
+      await monarque.sendMessage(
         m.chat,
         { text: '❌ Failed to lock the group. Make sure I am admin.' },
         { quoted: m }
